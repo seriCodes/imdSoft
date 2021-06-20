@@ -7,7 +7,7 @@ final DUMMY_PATIENTS = [
     id: '1',
     firstName: 'Rotem',
     lastName: "Reich",
-    // hertBeat:77,
+    hertBeat:77,
   ),
   Patient(
     id: '2',
