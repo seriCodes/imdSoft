@@ -8,6 +8,7 @@ class PatientDetails extends StatelessWidget {
   final String lastName;
   final int hertBeat;
   final String id;
+ Map<String, Object> routeArgs;
 
   PatientDetails(
       {Key key, this.firstName, this.lastName, this.hertBeat, this.id})
@@ -15,11 +16,11 @@ class PatientDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final routeArgs =
+     routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, Object>;
     // final String name =routeArgs["firstName"]  + " "+ routeArgs["lastName"];
 
-    print('routeArgs');
+    print('routeArgs detail');
     print(routeArgs);
 
     return Scaffold(
@@ -27,6 +28,7 @@ class PatientDetails extends StatelessWidget {
         title: Text('My Patient'),
       ),
       body: Container(
+        padding: const EdgeInsets.all( 10.0),
         child: Column(
           children: [
             Expanded(
@@ -64,15 +66,17 @@ class PatientDetails extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
-                    print("oressed");
+                    print("onPressed routeArgs");
+                    print(routeArgs);
 
                     return Navigator.of(context).pushNamed(
                         PatientForm.routeName,
                         arguments: <String, Object>{
-                          "firstName": firstName,
-                          "lastName": lastName,
-                          "hertBeat": hertBeat,
-                          "id": id
+                          "firstName":routeArgs["firstName"],
+                          "lastName": routeArgs["lastName"],
+                          "hertBeat": routeArgs["hertBeat"],
+                          "id": routeArgs["id"],
+                          "imageUrl":routeArgs["imageUrl"],
                         });
                   },
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './screens/homePage.dart';
 import './screens/patientdetails.dart';
 import './screens/patient_form.dart';
+import './screens/image_input.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,6 +36,8 @@ class MyApp extends StatelessWidget {
       routes: {
         PatientForm.routeName: (ctx) => PatientForm(),
         PatientDetails.routeName: (ctx) => PatientDetails(),
+        ImageInput.routeName: (ctx) => ImageInput(),
+
       },
     );
     //

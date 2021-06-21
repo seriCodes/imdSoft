@@ -5,6 +5,7 @@ class Patient {
   final String firstName;
   final String lastName;
    int hertBeat;
+   String imageUrl;
 
   
 
@@ -13,6 +14,7 @@ class Patient {
     @required this.firstName,
     @required this.lastName,
     this.hertBeat,
+    this.imageUrl,
 
 
   });

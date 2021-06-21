@@ -28,6 +28,8 @@ class HomePage extends StatelessWidget {
                       lastName: DUMMY_PATIENTS[index].lastName,
                       hertBeat: DUMMY_PATIENTS[index].hertBeat,
                       id: DUMMY_PATIENTS[index].id.toString(),
+                      imageUrl: DUMMY_PATIENTS[index].imageUrl,
+
                     )),
               );
             })

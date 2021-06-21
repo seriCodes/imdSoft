@@ -5,8 +5,9 @@ class PatientItem extends StatelessWidget {
   final String lastName;
   final int hertBeat;
   final String id;
+  final String imageUrl;
 
-  PatientItem({this.firstName, this.lastName, this.hertBeat, this.id});
+  PatientItem({this.firstName, this.lastName, this.hertBeat, this.id, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {

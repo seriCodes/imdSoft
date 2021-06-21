@@ -8,6 +8,7 @@ final DUMMY_PATIENTS = [
     firstName: 'Rotem',
     lastName: "Reich",
     hertBeat:77,
+    imageUrl:"https://miro.medium.com/max/784/1*XWOy4cdViEBAPKqZi48ojQ.png"
   ),
   Patient(
     id: '2',
