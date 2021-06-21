@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
 // import 'package:path/path.dart' as path;
 
-// import 'package:path/path.dart' as path;
-// import 'package:path_provider/path_provider.dart' as syspath;
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as syspath;
 
 class ImageInput extends StatefulWidget {
   static const routeName='./image_input_device';
@@ -21,14 +21,28 @@ class _ImageInputState extends State<ImageInput> {
     File _storedImage;
 Future <void> _takePicture() async {
   print("_takePicture");
-  final imageFile= await  ImagePicker().getImage(source: ImageSource.camera,
+   final imageFile= await  ImagePicker().getImage(source: ImageSource.camera,
   maxWidth: 500,
   maxHeight:MediaQuery. of(context). size. height-50,
   ); 
+  if(imageFile==null){
+return;
+  }
   setState(() {
     _storedImage=File( imageFile.path);
   });
-  // final appdir= syspath.
+   final appdir=await syspath.getApplicationDocumentsDirectory();
+    print('appdir');
+    print(appdir);
+
+  final fileName = path.basename(imageFile.path);
+    print('fileName');
+    print(fileName);
+
+  final SavedImage= await _storedImage.copy('${appdir.path}/$fileName');
+  print('SavedImage');
+    print(SavedImage);
+
 }
   @override
   void didChangeDependencies() {

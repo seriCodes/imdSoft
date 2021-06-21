@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import './screens/homePage.dart';
-import './screens/patientdetails.dart';
-import './screens/patient_form.dart';
-import './screens/image_input.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import './playgroung/cubit/counter_cubit.dart';
+import './playgroung/bloc/myHome.dart';
 void main() {
   runApp(MyApp());
 }
@@ -12,34 +11,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo 22test',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        // accentColor: Colors.blueAccent,
-        // cardColor: Color(0xFFFFFFFF),
-        textTheme: TextTheme(
-          bodyText1: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: Color(0xFFFFFFFF),
-            fontSize: 21.5,
-          ),
-          bodyText2: TextStyle(
-            color: Colors.indigo,
-            fontSize: 17.5,
+        title: 'bloc demo',
+        theme: ThemeData(
+          primarySwatch: Colors.indigo,
+          // accentColor: Colors.blueAccent,
+          // cardColor: Color(0xFFFFFFFF),
+          textTheme: TextTheme(
+            bodyText1: TextStyle(
+              fontWeight: FontWeight.w600,
+               fontSize: 21.5,
+            ),
+            bodyText2: TextStyle(
+              color: Colors.indigo,
+              fontSize: 17.5,
+            ),
           ),
         ),
-      ),
-      home: HomePage(),
-      // Text("DSADSADSAD")
-      // appBar: AppBar(title: Text('Flutter Demo Home Page 4561')),
+        home: BlocProvider<CounterCubit>(
+          create: (context) => CounterCubit(),
+          child: MyHomePage(title: 'bloc Demo Home Page'),
+        )
 
-      routes: {
-        PatientForm.routeName: (ctx) => PatientForm(),
-        PatientDetails.routeName: (ctx) => PatientDetails(),
-        ImageInput.routeName: (ctx) => ImageInput(),
+        // routes: {
+        //   PatientForm.routeName: (ctx) => PatientForm(),
+        //   PatientDetails.routeName: (ctx) => PatientDetails(),
+        //   ImageInput.routeName: (ctx) => ImageInput(),
 
-      },
-    );
+        // },
+        );
     //
   }
 }
+
