@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './screens/homePage.dart';
 import './screens/patientdetails.dart';
+import './screens/patient_form.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
       // appBar: AppBar(title: Text('Flutter Demo Home Page 4561')),
 
       routes: {
-        // PatientDetails.routeName: (ctx) => PatientDetails(),
+        PatientForm.routeName: (ctx) => PatientForm(),
         PatientDetails.routeName: (ctx) => PatientDetails(),
       },
     );
