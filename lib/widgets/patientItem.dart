@@ -1,5 +1,7 @@
 import 'package:first_app/screens/patientdetails.dart';
 import 'package:flutter/material.dart';
+import '../constants/routes.dart';
+
 class PatientItem extends StatelessWidget {
   final String firstName;
   final String lastName;
@@ -16,8 +18,7 @@ class PatientItem extends StatelessWidget {
     return GestureDetector(
       onTap: (){
                return Navigator.of(context).pushNamed( 
-                //  context, 
-                PatientDetails.routeName,
+               Routes.patientDetails,
        arguments: <String, Object>{
      "firstName":firstName,
     "lastName": lastName,

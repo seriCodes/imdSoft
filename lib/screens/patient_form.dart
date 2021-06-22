@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import '../models/patient.dart';
 import '../dummy_data.dart';
 import './image_input.dart';
-
+import '../constants/routes.dart';
 class PatientForm extends StatefulWidget {
-  // PatientForm({Key key}) : super(key: key);
-  static const routeName = '/patient-form';
-  // final int patienId;
-
-  // PatientForm(this.patienId);
-
+ 
   @override
   _PatientFormState createState() => _PatientFormState();
 }
@@ -180,7 +175,7 @@ class _PatientFormState extends State<PatientForm> {
                     icon: const Icon(Icons.camera_front),
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed(
-                        ImageInput.routeName,
+                        Routes.imageInput,
                         arguments: <String, Object>{
                           "id": routeArgs["id"],
                         },
