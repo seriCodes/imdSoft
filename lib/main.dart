@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import './playgroung/cubit/counter_cubit.dart';
 import './playgroung/bloc/myHome.dart';
+import './playgroung/bloc/statelessScreenOne.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -11,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+          
         title: 'bloc demo',
         theme: ThemeData(
           primarySwatch: Colors.indigo,
@@ -30,13 +33,14 @@ class MyApp extends StatelessWidget {
         home: BlocProvider<CounterCubit>(
           create: (context) => CounterCubit(),
           child: MyHomePage(title: 'bloc Demo Home Page'),
-        )
-
+        ),
+        // initialRoute:'./',
         // routes: {
-        //   PatientForm.routeName: (ctx) => PatientForm(),
-        //   PatientDetails.routeName: (ctx) => PatientDetails(),
-        //   ImageInput.routeName: (ctx) => ImageInput(),
-
+        //   './':(ctx) =>BlocProvider<CounterCubit>(
+        //   create: (context) => CounterCubit(),
+        //   child: MyHomePage(title: 'bloc Demo Home Page'),
+        // ),
+          // MyStaelessScreen.routeName: (ctx) => MyStaelessScreen(),
         // },
         );
     //

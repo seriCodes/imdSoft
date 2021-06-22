@@ -1,6 +1,9 @@
 import 'package:first_app/playgroung/cubit/counter_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import './anotherWidget.dart';
+import './statelessScreenOne.dart';
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -58,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FloatingActionButton(
-                  // heroTag: Text('${widget.title}'),
+                  heroTag: Text('${widget.title}'),
                   onPressed: () {
                     BlocProvider.of<CounterCubit>(context).decrement();
                   },
@@ -76,7 +79,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
 
               ],
-            )
+            ),
+            myStatelessWidget(),
+// IconButton(onPressed: (){
+//   Navigator.of(context).pushNamed(MyStaelessScreen.routeName);
+// }, icon: Icon(Icons.one_k))
           ],
         ),
       ),
