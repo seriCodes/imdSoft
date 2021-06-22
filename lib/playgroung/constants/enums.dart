@@ -2,3 +2,4 @@ enum ConnectionType {
   Wifi,
   Mobile,
 }
+
