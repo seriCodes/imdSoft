@@ -1,3 +1,4 @@
+import 'package:first_app/playgroung/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,17 +14,19 @@ class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
-
  
 class _MyAppState extends State<MyApp> {
-     final CounterCubit _counterCubit = CounterCubit();
+  final AppRouter _appRouter=AppRouter();
 
-  @override
-void dispose() { 
-  _counterCubit.close();
+
+@override
+void dispose(){
+_appRouter.dispose();
   super.dispose();
 }
-  @override
+
+
+   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'bloc demo',
@@ -46,17 +49,8 @@ void dispose() {
       //   create: (context) => CounterCubit(),
       //   child: MyHomePage(title: 'bloc Demo Home Page'),
       // ),
-      initialRoute: './',
-      routes: {
-        './': (ctx) => BlocProvider.value(
-              value: _counterCubit,
-              child: MyHomePage(title: 'bloc Demo Home Page'),
-            ),
-        MyStaelessScreen.routeName: (ctx) => BlocProvider.value(
-              value: _counterCubit,
-              child: MyStaelessScreen(),
-            ),
-      },
+      initialRoute: './',//? is it doing something?
+      onGenerateRoute: _appRouter.onGenerateRoute,
     );
     //
   }
