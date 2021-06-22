@@ -8,7 +8,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspath;
 
 class ImageInput extends StatefulWidget {
-  // static const routeName='./image_input_device';
+  static const routeName='./image_input_device';
 
   ImageInput({Key  key}) : super(key: key);
 
@@ -22,8 +22,6 @@ class _ImageInputState extends State<ImageInput> {
 Future <void> _takePicture() async {
   print("_takePicture");
    final imageFile= await  ImagePicker().getImage(source: ImageSource.camera,
-      // final imageFile= await  ImagePicker.getImage(source: ImageSource.camera,
-
   maxWidth: 500,
   maxHeight:MediaQuery. of(context). size. height-50,
   ); 

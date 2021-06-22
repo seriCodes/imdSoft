@@ -1,7 +1,5 @@
 import 'package:first_app/screens/patientdetails.dart';
 import 'package:flutter/material.dart';
-import '../constants/enums.dart';
-
 class PatientItem extends StatelessWidget {
   final String firstName;
   final String lastName;
@@ -19,7 +17,7 @@ class PatientItem extends StatelessWidget {
       onTap: (){
                return Navigator.of(context).pushNamed( 
                 //  context, 
-                Routes.patientDetails,
+                PatientDetails.routeName,
        arguments: <String, Object>{
      "firstName":firstName,
     "lastName": lastName,

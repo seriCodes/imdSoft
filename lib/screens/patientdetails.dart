@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'patient_form.dart';
-import '../constants/enums.dart';
+
 class PatientDetails extends StatelessWidget {
-  // static const routeName = '/patient-detail';
+  static const routeName = '/patient-detail';
   final String firstName;
   final String lastName;
   final int hertBeat;
@@ -70,7 +70,7 @@ class PatientDetails extends StatelessWidget {
                     print(routeArgs);
 
                     return Navigator.of(context).pushNamed(
-                        Routes.patientForm,
+                        PatientForm.routeName,
                         arguments: <String, Object>{
                           "firstName":routeArgs["firstName"],
                           "lastName": routeArgs["lastName"],
