@@ -18,13 +18,45 @@ static const routeName = './statelessScreenOne';
 BlocProvider.of<CounterCubit>(context).decrement();
           }, icon: Icon(Icons.ac_unit))
           ,
-          // BlocListener(listener:               ScaffoldMessengerState scaf = ScaffoldMessenger.of(context);,
-          Text('the count is'),
-          // BlocBuilder<CounterCubit, CounterState>(
-          //   builder: (context, state) {
-          //     return Text('the count is'+state.counterValue.toString());
-          //   },
-          // )
+          // Builder(builder: (BuildContext  context){
+          // return  Container(
+// child:TextButton(
+//             onPressed: () {
+//               print(Scaffold.of(context).hasAppBar);
+//             },
+//             child: Text('hasAppBar2'),
+//           ), 
+/////////////////////
+// child:BlocListener(listener:(context,state){
+// ScaffoldMessengerState scaf = ScaffoldMessenger.of(context);
+// print("lisetner MyStaelessScreen");
+/////////////////////////
+// scaf.showSnackBar(
+//                   SnackBar(
+//                     content: Text('inner lisetner'),
+//                     duration: Duration(milliseconds: 600)
+//                   ));
+// }
+           
+          //  ),
+
+//               child:BlocListener(listener:(context,state){
+// ScaffoldMessengerState scaf = ScaffoldMessenger.of(context);
+// scaf.showSnackBar(
+//                   SnackBar(
+//                     content: Text('Incremented!'),
+//                     duration: Duration(milliseconds: 300),
+                  // );
+              // } 
+              // )
+            
+          // ,
+          Text('seperate'),
+          BlocBuilder<CounterCubit, CounterState>(
+            builder: (context, state) {
+              return Text('the count is'+state.counterValue.toString());
+            },
+          )
 
 
 

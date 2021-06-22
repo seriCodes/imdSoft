@@ -9,41 +9,55 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+ 
+class _MyAppState extends State<MyApp> {
+     final CounterCubit _counterCubit = CounterCubit();
+
+  @override
+void dispose() { 
+  _counterCubit.close();
+  super.dispose();
+}
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-          
-        title: 'bloc demo',
-        theme: ThemeData(
-          primarySwatch: Colors.indigo,
-          // accentColor: Colors.blueAccent,
-          // cardColor: Color(0xFFFFFFFF),
-          textTheme: TextTheme(
-            bodyText1: TextStyle(
-              fontWeight: FontWeight.w600,
-               fontSize: 21.5,
-            ),
-            bodyText2: TextStyle(
-              color: Colors.indigo,
-              fontSize: 17.5,
-            ),
+      title: 'bloc demo',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+        // accentColor: Colors.blueAccent,
+        // cardColor: Color(0xFFFFFFFF),
+        textTheme: TextTheme(
+          bodyText1: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 21.5,
+          ),
+          bodyText2: TextStyle(
+            color: Colors.indigo,
+            fontSize: 17.5,
           ),
         ),
-        home: BlocProvider<CounterCubit>(
-          create: (context) => CounterCubit(),
-          child: MyHomePage(title: 'bloc Demo Home Page'),
-        ),
-        // initialRoute:'./',
-        // routes: {
-        //   './':(ctx) =>BlocProvider<CounterCubit>(
-        //   create: (context) => CounterCubit(),
-        //   child: MyHomePage(title: 'bloc Demo Home Page'),
-        // ),
-          // MyStaelessScreen.routeName: (ctx) => MyStaelessScreen(),
-        // },
-        );
+      ),
+      // home: BlocProvider<CounterCubit>(
+      //   create: (context) => CounterCubit(),
+      //   child: MyHomePage(title: 'bloc Demo Home Page'),
+      // ),
+      initialRoute: './',
+      routes: {
+        './': (ctx) => BlocProvider.value(
+              value: _counterCubit,
+              child: MyHomePage(title: 'bloc Demo Home Page'),
+            ),
+        MyStaelessScreen.routeName: (ctx) => BlocProvider.value(
+              value: _counterCubit,
+              child: MyStaelessScreen(),
+            ),
+      },
+    );
     //
   }
 }
-

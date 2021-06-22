@@ -81,9 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             myStatelessWidget(),
-// IconButton(onPressed: (){
-//   Navigator.of(context).pushNamed(MyStaelessScreen.routeName);
-// }, icon: Icon(Icons.one_k))
+IconButton(onPressed: (){
+  Navigator.of(context).pushNamed(MyStaelessScreen.routeName);
+}, icon: Icon(Icons.one_k))
           ],
         ),
       ),
