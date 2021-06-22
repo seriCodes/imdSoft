@@ -8,45 +8,37 @@ import './screens/image_input.dart';
 import './screens/patient_form.dart';
 import './screens/patientdetails.dart';
 
-
 class AppRouter {
-
   Route onGenerateRoute(RouteSettings routeSettings) {
     print("routeSettings print");
-     print(routeSettings);
-
+    print(routeSettings);
 
     switch (routeSettings.name) {
       case Routes.home:
         return MaterialPageRoute(
-         
           builder: (_) => HomePage(),
         );
-
         break;
       case Routes.patientDetails:
-       return  MaterialPageRoute(
+        return MaterialPageRoute(
           builder: (_) => PatientDetails(),
-           settings: routeSettings,
+          settings: routeSettings,
         );
         break;
       case Routes.patientForm:
-       return  MaterialPageRoute(
+        return MaterialPageRoute(
           builder: (_) => PatientForm(),
-                     settings: routeSettings,
-
+          settings: routeSettings,
         );
         break;
- case Routes.imageInput:
-       return  MaterialPageRoute(
+      case Routes.imageInput:
+        return MaterialPageRoute(
           builder: (_) => ImageInput(),
-                     settings: routeSettings,
-
+          settings: routeSettings,
         );
         break;
       default:
         return null;
     }
   }
-
 }
