@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../dummy_data.dart';
- import '../blocs/patients_cubit.dart';
+import '../blocs/patients_cubit.dart';
 
 import '../widgets/patientItem.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
- class HomePage extends StatelessWidget {
+
+class HomePage extends StatelessWidget {
   const HomePage() : super();
 
   @override
@@ -13,9 +14,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
         appBar: AppBar(title: Text('My Patients'), actions: <Widget>[
           IconButton(onPressed: () {}, icon: Icon(Icons.add)),
         ]),
-        // context.watch<>().
         body: BlocBuilder<PatientsCubit, PatientsState>(
           builder: (context, state) {
+            // state.
+           int one= state.printSomeState;
             return ListView.builder(
                 padding: const EdgeInsets.all(8),
                 itemCount: state.patients.length,
@@ -38,18 +40,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
                 });
           },
         )
-
-        // Column(
-        //   children: [
-        // Expanded(
-        // child:
-        // ListView.builder(
-        //   itemCount: state.patients.length,
-        //   itemBuilder: (ctx, i) => Text("state.patients[i].firstName")
-        // )
-        // )
-        // ],
-        // ),
 
         );
   }

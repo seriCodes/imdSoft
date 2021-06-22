@@ -11,4 +11,8 @@ import '../dummy_data.dart';
   class PatientsCubit extends Cubit<PatientsState> {
 
   PatientsCubit() : super(PatientsState(patients:DUMMY_PATIENTS));
+
+  void get printSome {
+    print("printSome PatientsCubit");
+  }
   }
