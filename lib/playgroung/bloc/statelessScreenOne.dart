@@ -11,7 +11,7 @@ static const routeName = './statelessScreenOne';
 
 
     return Scaffold(
-      appBar: AppBar(title: Text("MyStaelessScreen"),),
+      appBar: AppBar(title: Text("MyStaelessScreen chec"),),
       body: Center(
         child: Column(children: [
           IconButton(onPressed: (){

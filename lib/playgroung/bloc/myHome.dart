@@ -20,14 +20,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<InternetCubit,InternetState>(
+    return BlocListener<InternetCubit, InternetState>(
       listener: (context, state) {
-        if(state is InternetConnected && ConnectionType.Mobile==state.connectionType){
+        if (state is InternetConnected &&
+            ConnectionType.Mobile == state.connectionType) {
           BlocProvider.of<CounterCubit>(context).decrement();
-        }else if(state is InternetConnected && ConnectionType.Wifi==state.connectionType){
-                  BlocProvider.of<CounterCubit>(context).increment();
+        } else if (state is InternetConnected &&
+            ConnectionType.Wifi == state.connectionType) {
+          BlocProvider.of<CounterCubit>(context).increment();
         }
-
       },
       child: Scaffold(
         appBar: AppBar(
@@ -37,6 +38,34 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Builder(
+                builder: (context) {
+                  final counterState = context.watch<CounterCubit>().state;
+                  final internetState = context.watch<InternetCubit>().state;
+                  if (internetState is InternetConnected &&
+                      internetState.connectionType == ConnectionType.Wifi &&
+                      counterState.counterValue > 0) {
+                    return Text('state no 1: wifi + positive');
+                  }
+                   if (internetState is InternetConnected &&
+                      internetState.connectionType == ConnectionType.Wifi &&
+                      counterState.counterValue < 0) {
+                    return Text('state no 2: wifi + Negative');
+                  }
+                   if (internetState is InternetConnected &&
+                      internetState.connectionType == ConnectionType.Mobile &&
+                      counterState.counterValue < 0) {
+                    return Text('state no 3: Mobile + Negative');
+                  }
+                   if (internetState is InternetConnected &&
+                      internetState.connectionType == ConnectionType.Mobile &&
+                      counterState.counterValue > 0) {
+                    return Text('state no 3: Mobile + positive');
+                  }
+
+                  return Text('state default');
+                },
+              ),
               BlocBuilder<InternetCubit, InternetState>(
                   builder: (context, state) {
                 if (state is InternetConnected &&

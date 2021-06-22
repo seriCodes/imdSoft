@@ -27,7 +27,7 @@ dependencies:
   image_picker: ^0.6.0+9
   path_provider: ^1.1.0
   path: ^1.8.0
-  flutter_bloc: ^6.0.5
+  flutter_bloc: ^6.1.0
   test: ^1.15.2
   bloc_test: ^7.0.4
   equatable: ^1.2.5
