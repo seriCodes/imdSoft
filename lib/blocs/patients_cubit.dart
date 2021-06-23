@@ -15,4 +15,14 @@ import '../dummy_data.dart';
   void get printSome {
     print("printSome PatientsCubit");
   }
+
+  void saveHeartBeat (String value, String id){
+List<Patient> newList= state.patients;
+Patient result =newList.firstWhere((element) => element.id==id);
+ result.hertBeat=int.parse(value);
+ emit (PatientsState(newList));
+}
+
+// void decrement()=>emit(PatientsState(counterValue: state.counterValue-1, wasIncremented: false));
+
   }

@@ -11,10 +11,7 @@ class CounterState{
     this.counterValue,
     this.wasIncremented
   });
-}
-
-
-
+} 
  
   class CounterCubit extends Cubit<CounterState> {
 

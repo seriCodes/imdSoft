@@ -18,8 +18,8 @@ class HomePage extends StatelessWidget {
         body: BlocBuilder<PatientsCubit, PatientsState>(
           builder: (context, state) {
             List<Patient> copy= state.patients ;
-           copy[1].hertBeat=3232;
- 
+            print("copy[2].id.toString()");
+            print(copy[2].id.toString());
             return ListView.builder(
                 padding: const EdgeInsets.all(8),
                 itemCount: state.patients.length,

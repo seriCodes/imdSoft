@@ -3,15 +3,17 @@ import '../models/patient.dart';
 import '../dummy_data.dart';
 import './image_input.dart';
 import '../constants/routes.dart';
+import '../blocs/patients_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 class PatientForm extends StatefulWidget {
- 
   @override
   _PatientFormState createState() => _PatientFormState();
 }
 
 class _PatientFormState extends State<PatientForm> {
   final _imageUrlController = TextEditingController();
-  TextEditingController _controller;
+  TextEditingController _heartbeatController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   final _form_key = GlobalKey<FormState>();
   bool _isInit = false;
@@ -32,16 +34,15 @@ class _PatientFormState extends State<PatientForm> {
       print('didChangeDependencies routeArgs');
       print(routeArgs);
 
-      bool test(element) {
-        print(element.id);
-        return element.id == routeArgs["id"];
-      }
-
-      ;
+      // bool test(element) {
+      //   print(element.id);
+      //   return element.id == routeArgs["id"];
+      // }  ;
       //! get the patioens from the bloc
-      _initValues = DUMMY_PATIENTS.firstWhere(test);
-      ;
-      _imageUrlController.text = _initValues.imageUrl;
+      // _initValues = DUMMY_PATIENTS.firstWhere(test);
+      // ;
+      // _imageUrlController.text = _initValues.imageUrl;
+      _imageUrlController.text = routeArgs["imageUrl"];
     }
     print(_initValues);
     _isInit = true;
@@ -75,7 +76,7 @@ class _PatientFormState extends State<PatientForm> {
     if (_form_key.currentState.validate()) {
       print('_saveForm');
       _form_key.currentState.save();
-      print(_form_key);
+      print(_form_key.currentState);
     }
   }
 
@@ -98,94 +99,123 @@ class _PatientFormState extends State<PatientForm> {
               icon: Icon(Icons.save)),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Form(
-          key: _form_key,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Text('Enter Heart beat'),
-                TextFormField(
-                  initialValue: _initValues.hertBeat == null
-                      ? ""
-                      : _initValues.hertBeat.toString(),
-                  decoration: InputDecoration(
-                      labelText: 'Enter heart beat between 0 to 200'),
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    print('validator hb');
-                    int hb;
-                    try {
-                      hb = int.parse(value);
-                    } catch (e) {
-                      print(e);
-                      return "Please enter a number";
-                    }
-                    if (hb < 200 && hb > -1) {
-                      return null;
-                    } else {
-                      return "Please enter VALID a number";
-                    }
-                  },
-                  onFieldSubmitted: (value) {
-                    print(value);
-                  },
+      body: BlocBuilder<PatientsCubit, PatientsState>(
+        builder: (context, state) {
+          Patient copy = state.patient(routeArgs["id"]);
+
+          return Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Form(
+              key: _form_key,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Text('Enter Heart beat'),
+                    TextFormField(
+                      initialValue:
+                          copy.hertBeat == null ? "" : copy.hertBeat.toString(),
+                      decoration: InputDecoration(
+                          labelText: 'Enter heart beat between 0 to 200'),
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.number,
+                      // controller: _heartbeatController,
+                      validator: (String v) => heartbeatValidation(v),
+                      onSaved: (String value) {
+                        print(" save hb url");
+                        print(value);
+                      },
+                      onFieldSubmitted: (value) {
+                        print(value);
+                        print("onFieldSubmitted saveHeartBeat");
+                        if (heartbeatValidation(value) == null) {
+                          print("onFieldSubmitted saveHeartBeat sucess");
+                          BlocProvider.of<PatientsCubit>(context)
+                              .saveHeartBeat(value, copy.id);
+                        }
+
+                        // context.read<PatientsCubit>().
+                      },
+                    ),
+                    Text('Enter image url'),
+                    TextFormField(
+                      onSaved: (String value) {
+                        print(" save image url");
+                        print(value);
+                      },
+                      keyboardType: TextInputType.url,
+                      controller: _imageUrlController,
+                      focusNode: _imageUrlFocusNode,
+                      validator: formValidator,
+                      onFieldSubmitted: onUrlSubmited,
+                      textInputAction: TextInputAction.done,
+                    ),
+                    if (!_imageUrlController.text.isEmpty &&
+                        (_imageUrlController.text.startsWith('http')
+                        // || _imageUrlController.text.startsWith('https')
+                        ))
+                      FittedBox(
+                          child: Image.network(
+                        //  "https://miro.medium.com/max/784/1*XWOy4cdViEBAPKqZi48ojQ.png",
+                        _imageUrlController.text,
+                        fit: BoxFit.cover,
+                      )),
+                    TextButton.icon(
+                        label: Text("Take a picture page"),
+                        icon: const Icon(Icons.camera_front),
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed(
+                            Routes.imageInput,
+                            arguments: <String, Object>{
+                              "id": routeArgs["id"],
+                            },
+                          );
+                        }),
+                  ],
                 ),
-                Text('Enter image url'),
-                TextFormField(
-                  keyboardType: TextInputType.url,
-                  controller: _imageUrlController,
-                  focusNode: _imageUrlFocusNode,
-                  validator: (value) {
-                    print('validator img');
-                    print(value);
-                    if (!value.isEmpty && !value.startsWith('http')
-                        // && !value.startsWith('https')
-                        ) {
-                      return "please enter valid url";
-                    }
-                    if (!value.endsWith(".png") &&
-                        !value.endsWith(".jpg") &&
-                        !value.endsWith(".jpeg")) {
-                      print('jpg');
-                      return "please enter png, jpg or jpeg url";
-                    }
-                    return null;
-                  },
-                  onFieldSubmitted: (value) {
-                    print(value);
-                    _saveForm();
-                  },
-                  textInputAction: TextInputAction.done,
-                ),
-                if (!_imageUrlController.text.isEmpty &&
-                    (_imageUrlController.text.startsWith('http')
-                    // || _imageUrlController.text.startsWith('https')
-                    ))
-                  FittedBox(
-                      child: Image.network(
-                    //  "https://miro.medium.com/max/784/1*XWOy4cdViEBAPKqZi48ojQ.png",
-                    _imageUrlController.text,
-                    fit: BoxFit.cover,
-                  )),
-                TextButton.icon(
-                    label: Text("Take a picture page"),
-                    icon: const Icon(Icons.camera_front),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed(
-                        Routes.imageInput,
-                        arguments: <String, Object>{
-                          "id": routeArgs["id"],
-                        },
-                      );
-                    }),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
+  }
+
+  String heartbeatValidation(value) {
+    print('validator hb');
+    int hb;
+    try {
+      hb = int.parse(value);
+    } catch (e) {
+      print(e);
+      return "Please enter a number";
+    }
+    if (hb < 200 && hb > -1) {
+      return null;
+    } else {
+      return "Please enter VALID a number";
+    }
+  }
+
+  void onUrlSubmited(value) {
+    print("value onUrlSubmited");
+    print(value);
+    _saveForm();
+  }
+
+  String formValidator(value) {
+    print('validator img');
+    print(value);
+    if (!value.isEmpty && !value.startsWith('http')
+        // && !value.startsWith('https')
+        ) {
+      return "please enter valid url";
+    }
+    if (!value.endsWith(".png") &&
+        !value.endsWith(".jpg") &&
+        !value.endsWith(".jpeg")) {
+      print('jpg');
+      return "please enter png, jpg or jpeg url";
+    }
+    return null;
   }
 }
