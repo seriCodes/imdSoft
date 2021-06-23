@@ -83,34 +83,45 @@ class _ImageInputState extends State<ImageInput> {
             _storedImage = File(copy.storedImage);
           }
           return SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _storedImage != null
-                            ? Image.file(
-                                _storedImage,
-                                fit: BoxFit.cover,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height,
+              maxWidth: MediaQuery.of(context).size.width
+              ),
+              child: Column(
+              
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                            Center(
+                              child: IconButton(
+                                  onPressed: () {
+                                    _takePicture(
+                                        BlocProvider.of<PatientsCubit>(context)
+                                            .saveStoredImage,copy.id);
+                                  },
+                                  icon: Icon(Icons.camera_alt_outlined))
+                                  ),
+
+                          _storedImage != null
+                              ? Flexible(
+                                child: Image.file(
+                                    _storedImage,
+                                    fit: BoxFit.cover,
+                                  ),
                               )
-                            : Text("Take an image"),
-                        Center(
-                            child: IconButton(
-                                onPressed: () {
-                                  _takePicture(
-                                      BlocProvider.of<PatientsCubit>(context)
-                                          .saveStoredImage,copy.id);
-                                },
-                                icon: Icon(Icons.camera_alt_outlined))),
-                      ],
+                              : Text("Take an image"),
+                        
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
