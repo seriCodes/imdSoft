@@ -1,3 +1,4 @@
+import 'package:first_app/models/patient.dart';
 import 'package:flutter/material.dart';
 import '../dummy_data.dart';
 import '../blocs/patients_cubit.dart';
@@ -16,8 +17,9 @@ class HomePage extends StatelessWidget {
         ]),
         body: BlocBuilder<PatientsCubit, PatientsState>(
           builder: (context, state) {
-            // state.
-           int one= state.printSomeState;
+            List<Patient> copy= state.patients ;
+           copy[1].hertBeat=3232;
+ 
             return ListView.builder(
                 padding: const EdgeInsets.all(8),
                 itemCount: state.patients.length,
@@ -30,11 +32,11 @@ class HomePage extends StatelessWidget {
                         height: 60,
                         color: Colors.blue,
                         child: PatientItem(
-                          firstName: state.patients[index].firstName,
-                          lastName: state.patients[index].lastName,
-                          hertBeat: state.patients[index].hertBeat,
-                          id: state.patients[index].id.toString(),
-                          imageUrl: state.patients[index].imageUrl,
+                          firstName: copy[index].firstName,
+                          lastName: copy[index].lastName,
+                          hertBeat: copy[index].hertBeat,
+                          id: copy[index].id.toString(),
+                          imageUrl: copy[index].imageUrl,
                         )),
                   );
                 });

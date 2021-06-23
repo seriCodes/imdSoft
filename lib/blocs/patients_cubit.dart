@@ -10,7 +10,7 @@ import '../dummy_data.dart';
 
   class PatientsCubit extends Cubit<PatientsState> {
 
-  PatientsCubit() : super(PatientsState(patients:DUMMY_PATIENTS));
+  PatientsCubit() : super(PatientsState(DUMMY_PATIENTS));
 
   void get printSome {
     print("printSome PatientsCubit");

@@ -15,7 +15,8 @@ class Patient {
     @required this.lastName,
     this.hertBeat,
     this.imageUrl,
-
-
   });
+
 }
+
+

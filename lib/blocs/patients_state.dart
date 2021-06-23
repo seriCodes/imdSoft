@@ -2,13 +2,19 @@
  part of patients_cubit;
 
 class PatientsState{
-List<Patient> patients;
+List<Patient> _patients;
 
-PatientsState({
-  this.patients,
-});
-int get printSomeState {
-    print("printSome patients");
-    return 1;
+PatientsState(
+  this._patients,
+);
+ 
+    //copy to guard the original state from changes
+  List<Patient> get patients {
+    print("List<Patient> get patients");  
+List<Patient>  result = (_patients.map( (e) { 
+          return new Patient(id: e.id, firstName: e.firstName, lastName: e.lastName, hertBeat:e.hertBeat, imageUrl:e.imageUrl);
+     } )).toList();
+    return result;
   }
+
 }
