@@ -31,6 +31,9 @@ class PatientDetails extends StatelessWidget {
           Patient copy = state.patient(id);
           print("copy url dtails");
           print(copy.imageUrl);
+          Color boxColor= Colors.blue;
+          Color textColor= Colors.white;
+
 
               return SingleChildScrollView(
                 child: ConstrainedBox(
@@ -56,21 +59,27 @@ class PatientDetails extends StatelessWidget {
                                 flex: 1,
                                 child: FittedBox(
                                     child: Image.network(copy.imageUrl)),
-                                //  Placeholder(
-                                //   fallbackWidth: 5,
-                                //   fallbackHeight: 10,
-                                // ),
                               );
                             },
                           ),
                         Expanded(
                           flex: 1,
                           child: Container(
-                            color: Color.fromARGB(200, 0, 100, 111),
+  width: MediaQuery.of(context).size.width / 3,
+
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: boxColor,
+                            ),
                             margin: EdgeInsets.symmetric(vertical: 10),
-                            child: RichText(
-                              text: TextSpan(
-                                  text: '${copy.firstName} ${copy.lastName}'),
+                            padding: EdgeInsetsDirectional.all(10),
+                            child: Center(
+                              child: RichText(
+                                text: TextSpan(
+  style:TextStyle(color: textColor),
+
+                                    text: '${copy.firstName} ${copy.lastName}'),
+                              ),
                             ),
                           ),
                         ),
@@ -80,19 +89,32 @@ class PatientDetails extends StatelessWidget {
                             width: MediaQuery.of(context).size.width / 1.2,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: Color.fromARGB(200, 150, 100, 111),
+                              color: boxColor,
                             ),
                             margin: EdgeInsets.symmetric(vertical: 10),
                             padding: EdgeInsetsDirectional.all(10),
-                            child: Text(
-                                'Heart beat is ${copy.hertBeat != null ? copy.hertBeat : "not avialble"}'),
+                            child: RichText(
+                             
+                              text:TextSpan(
+                                 style:TextStyle(color: textColor),
+                              children:  <TextSpan>[
+                                TextSpan(text:"Patien Details \n\n",
+                                style: TextStyle(fontSize: 19)),
+TextSpan(
+    text:'\r\r\r Heart beat is ${copy.hertBeat != null ? copy.hertBeat : "not avialble"}'
+),
+                              ] 
+
+                                )
+
+                                ),
                           ),
                         ),
                         Expanded(
                           flex: 1,
                           child: Container(
                             margin: EdgeInsets.symmetric(vertical: 10),
-                            color: Color.fromARGB(200, 150, 100, 111),
+                            color:  textColor,
                             padding: EdgeInsetsDirectional.all(10),
                             child: IconButton(
                               icon: const Icon(Icons.edit),
