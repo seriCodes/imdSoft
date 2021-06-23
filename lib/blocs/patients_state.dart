@@ -16,8 +16,7 @@ List<Patient>  result = (_patients.map( (e) {
     return result;
   }
   Patient patient(String id){
-    print("patient id");
-     print(id);
+      print(id);
 
 
        Patient result = _patients.firstWhere((element) => element.id==id);
@@ -27,15 +26,11 @@ List<Patient>  result = (_patients.map( (e) {
 return makeCopy(result);
   }
 
-// void savePatient(){
 
-// }
 
   Patient makeCopy(Patient e){
-    return new Patient(id: e.id, firstName: e.firstName, lastName: e.lastName, hertBeat:e.hertBeat, imageUrl:e.imageUrl);
+    return new Patient(id: e.id, firstName: e.firstName, lastName: e.lastName, hertBeat:e.hertBeat, imageUrl:e.imageUrl, storedImage:e.storedImage);
      }  
   
-void changeHeartBeat(){
-
-}
+ 
 }

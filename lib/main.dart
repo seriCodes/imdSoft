@@ -4,6 +4,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 // import './screens/homePage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import './blocs/patients_cubit.dart';
+import './blocs/internt_cubit.dart';
+
 void main() {
   runApp(MyApp(
     appRouter: AppRouter(),
@@ -25,8 +27,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
  providers: [
-        // BlocProvider<InternetCubit>(
-        //     create: (context) => InternetCubit(connectivity: connectivity)),
+        BlocProvider<InternetCubit>(
+            create: (context) => InternetCubit(connectivity: connectivity)),
         BlocProvider<PatientsCubit>(
           create: (context) => PatientsCubit(),
         ),

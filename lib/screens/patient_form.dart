@@ -1,9 +1,12 @@
+import 'package:first_app/constants/connections.dart';
 import 'package:flutter/material.dart';
 import '../models/patient.dart';
 import '../dummy_data.dart';
 import './image_input.dart';
 import '../constants/routes.dart';
 import '../blocs/patients_cubit.dart';
+import '../blocs/internt_cubit.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PatientForm extends StatefulWidget {
@@ -172,11 +175,38 @@ class _PatientFormState extends State<PatientForm> {
                         onPressed: () {
                           Navigator.of(context).pushReplacementNamed(
                             Routes.imageInput,
-                            arguments: <String, Object>{
-                              "id": routeArgs["id"],
+                            arguments:
+                             <String, Object>{
+                              "id": copy.id,
                             },
+                            // copy.id,
                           );
                         }),
+                        Builder(builder: (context){
+                         final internetState =  context.watch<InternetCubit>().state;
+ int index=BlocProvider.of<PatientsCubit>(context).getItemIndex( copy.id);
+                        print("index getItemIndex");
+          print(index);
+
+//  final heartbeatState =  context.select<PatientsCubit>().state.patients[index].hertBeat;
+
+print('internetState');
+print(internetState);
+
+if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Wifi){
+return  Text("Wifi");
+}
+if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Mobile){
+return  Text("mobile");
+}
+if(internetState is InternetDisconnected  ){
+return  Text("no internt");
+}
+if(internetState is InternetLoading  ){
+return  CircularProgressIndicator();
+}
+                        return  null;
+                        })
                   ],
                 ),
               ),

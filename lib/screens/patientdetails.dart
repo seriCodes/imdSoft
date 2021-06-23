@@ -24,7 +24,7 @@ class PatientDetails extends StatelessWidget {
       body: BlocBuilder<PatientsCubit, PatientsState>(
         builder: (context, state) {
           print("copy id");
-          //  print(id);
+           print(id);
 
           Patient copy = state.patient(id);
           print("copy url dtails");

@@ -26,4 +26,17 @@ Patient result =newList.firstWhere((element) => element.id==id);
  result.imageUrl=value;
  emit (PatientsState(newList));
 }
+  void saveStoredImage (String value, String id){
+    print("saveStoredImage");
+List<Patient> newList= state.patients;
+Patient result =newList.firstWhere((element) => element.id==id);
+ result.storedImage=value;
+ emit (PatientsState(newList));
+}
+int getItemIndex(String id){
+       int result =state.patients.indexWhere((element) => element.id==id);
+  
+return result ;
+
+}
   }

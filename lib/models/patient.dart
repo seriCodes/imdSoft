@@ -6,6 +6,8 @@ class Patient {
   final String lastName;
    int hertBeat;
    String imageUrl;
+      String storedImage;
+
 
   
 
@@ -15,6 +17,7 @@ class Patient {
     @required this.lastName,
     this.hertBeat,
     this.imageUrl,
+    this.storedImage
   });
 
 }
