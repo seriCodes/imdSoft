@@ -128,6 +128,25 @@ class _PatientFormState extends State<PatientForm> {
                         print(value);
                       },
                       onFieldSubmitted: (value) {
+// final a = BlocProvider.of<InternetCubit>(context).state;
+// print("watch<InternetCubit>().state is InternetDisconnected");
+// print(a);
+                        //         ScaffoldMessenger.of(context).showSnackBar(
+                        //         SnackBar(
+                        //   content: Text('some'),
+                        //   duration: Duration(milliseconds: 2000),
+                        // ),
+                        //       );
+                        if (context.watch<InternetCubit>().state
+                            is InternetDisconnected) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('No internet! No State update'),
+                              duration: Duration(milliseconds: 2000),
+                            ),
+                          );
+                          return;
+                        }
                         if (heartbeatValidation(value) == null) {
                           BlocProvider.of<PatientsCubit>(context)
                               .saveHeartBeat(value, copy.id);
@@ -145,14 +164,12 @@ class _PatientFormState extends State<PatientForm> {
                       keyboardType: TextInputType.url,
                       controller: _imageUrlController,
                       focusNode: _imageUrlFocusNode,
-                      validator:(v)=> urlValidator(v),
+                      validator: (v) => urlValidator(v),
                       onFieldSubmitted: (value) {
                         print("value onUrlSubmited");
-                        if (urlValidator(value)==null){
-                        BlocProvider.of<PatientsCubit>(context)
+                        if (urlValidator(value) == null) {
+                          BlocProvider.of<PatientsCubit>(context)
                               .saveUrlImage(value, copy.id);
-
-
                         }
 
                         print(value);
@@ -161,44 +178,51 @@ class _PatientFormState extends State<PatientForm> {
                       textInputAction: TextInputAction.done,
                     ),
                     if (!_imageUrlController.text.isEmpty &&
-                        (_imageUrlController.text.startsWith('http') 
-                        // || _imageUrlController.text.startsWith('https')
-                        ))
-                      FittedBox(
-                          child: Image.network(
-                         _imageUrlController.text,
-                        fit: BoxFit.cover,
-                      )),
+                        (_imageUrlController.text.startsWith('http')  
+                           ))
+                      BlocBuilder<InternetCubit, InternetState>(
+                        builder: (context, state) {
+                          if(state is InternetDisconnected){
+                            return Text("Can't present url image without connection");
+                          }
+                          return FittedBox(
+                              child: Image.network(
+                            _imageUrlController.text,
+                            fit: BoxFit.cover,
+                          ));
+                        },
+                      ),
                     TextButton.icon(
                         label: Text("Take a picture page"),
                         icon: const Icon(Icons.camera_front),
                         onPressed: () {
                           Navigator.of(context).pushReplacementNamed(
                             Routes.imageInput,
-                            arguments:
-                             <String, Object>{
+                            arguments: <String, Object>{
                               "id": copy.id,
                             },
                             // copy.id,
                           );
                         }),
-BlocListener<PatientsCubit, PatientsState>(
-  listener: (context, state) { 
-        // final internetState =  context.watch<InternetCubit>().state;
-print('BlocListener<PatientsCubit222');
+                    BlocListener<PatientsCubit, PatientsState>(
+                      listener: (context, state) {
+                        // final internetState =  context.watch<InternetCubit>().state;
+                        final internetState =
+                            BlocProvider.of<InternetCubit>(context).state;
+                        print('BlocListener<PatientsCubit332');
 
 //  final heartbeatState =  context.select<PatientsCubit>().state.patients[index].hertBeat;
 // String result = "dsd";
-print('internetState');
-// print(internetState);
+                        print('internetState');
+                        print(internetState);
 
 // if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Wifi){
-  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Wifi!'),
-                      duration: Duration(milliseconds: 2000),
-                    ),
-                  );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Wifi!'),
+                            duration: Duration(milliseconds: 2000),
+                          ),
+                        );
 
 // }
 // if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Mobile){
@@ -211,12 +235,9 @@ print('internetState');
 // // return  CircularProgressIndicator();
 // }
                         // return  Text("default");
-                        
-                        },
- child:Container(),
-
-                   
-                      )
+                      },
+                      child: Container(),
+                    )
                   ],
                 ),
               ),
@@ -263,6 +284,7 @@ print('internetState');
       print('jpg');
       return "please enter png, jpg or jpeg url";
     }
+    print("before url null");
     return null;
   }
 }

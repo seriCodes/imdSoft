@@ -1,10 +1,12 @@
 import 'package:first_app/models/patient.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'patient_form.dart';
 import '../constants/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/patients_cubit.dart';
+import '../blocs/internt_cubit.dart';
 
 class PatientDetails extends StatelessWidget {
   // Map<String, Object> routeArgs;
@@ -24,26 +26,36 @@ class PatientDetails extends StatelessWidget {
       body: BlocBuilder<PatientsCubit, PatientsState>(
         builder: (context, state) {
           print("copy id");
-           print(id);
+          print(id);
 
           Patient copy = state.patient(id);
           print("copy url dtails");
           print(copy.imageUrl);
 
-          return Container(
+          return   Container(
+            width: double.infinity,
             padding: const EdgeInsets.all(10.0),
             child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+
               children: [
-               if(copy.imageUrl!=null && copy.imageUrl.isNotEmpty) Expanded(
-                  flex: 1,
-                  child:FittedBox(
-                          child: Image.network(copy.imageUrl
-                      )),
-                  //  Placeholder(
-                  //   fallbackWidth: 5,
-                  //   fallbackHeight: 10,
-                  // ),
-                ),
+                if (copy.imageUrl != null && copy.imageUrl.isNotEmpty)
+                  BlocBuilder<InternetCubit, InternetState>(
+                    builder: (context, state) {
+                    if(state is InternetDisconnected){
+                            return Text("Can't present url image without connection");
+                          }
+
+                      return Expanded(
+                        flex: 1,
+                        child: FittedBox(child: Image.network(copy.imageUrl)),
+                        //  Placeholder(
+                        //   fallbackWidth: 5,
+                        //   fallbackHeight: 10,
+                        // ),
+                      );
+                    },
+                  ),
                 Expanded(
                   flex: 1,
                   child: Container(
@@ -75,16 +87,15 @@ class PatientDetails extends StatelessWidget {
                         // print(routeArgs);
 
                         return Navigator.of(context)
-                            .pushNamed(Routes.patientForm, 
-                            // arguments: id
+                            .pushNamed(Routes.patientForm,
+                                // arguments: id
                                 arguments: <String, Object>{
-                                //   "firstName": copy.firstName,
-                                //   "lastName": copy.lastName,
-                                //   "hertBeat": copy.hertBeat,
-                                  "id": copy.id,
-                                  "imageUrl": copy.imageUrl,
-                                }
-                                );
+                              //   "firstName": copy.firstName,
+                              //   "lastName": copy.lastName,
+                              //   "hertBeat": copy.hertBeat,
+                              "id": copy.id,
+                              "imageUrl": copy.imageUrl,
+                            });
                       },
                     ),
                   ),
