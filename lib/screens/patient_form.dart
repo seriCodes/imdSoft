@@ -94,13 +94,6 @@ class _PatientFormState extends State<PatientForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit patient"),
-        // actions: <Widget>[
-        //   IconButton(
-        //       onPressed: () {
-        //         _saveForm();
-        //       },
-        //       icon: Icon(Icons.save)),
-        // ],
       ),
       body: BlocBuilder<PatientsCubit, PatientsState>(
         builder: (context, state) {
@@ -137,19 +130,29 @@ class _PatientFormState extends State<PatientForm> {
                         //   duration: Duration(milliseconds: 2000),
                         // ),
                         //       );
-                        if (context.watch<InternetCubit>().state
-                            is InternetDisconnected) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('No internet! No State update'),
-                              duration: Duration(milliseconds: 2000),
-                            ),
-                          );
-                          return;
-                        }
+
+                        // if (context.watch<InternetCubit>().state
+                        //     is InternetDisconnected) {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     SnackBar(
+                        //       content: Text('No internet! No State update'),
+                        //       duration: Duration(milliseconds: 2000),
+                        //     ),
+                        //   );
+                        //   return;
+                        // }
+
                         if (heartbeatValidation(value) == null) {
                           BlocProvider.of<PatientsCubit>(context)
                               .saveHeartBeat(value, copy.id);
+  ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                          content: Text('heartbeat updated in state ${value}'),
+                          duration: Duration(milliseconds: 2000),
+                        ),
+  );
+
+
                         }
 
                         // context.read<PatientsCubit>().
@@ -157,6 +160,7 @@ class _PatientFormState extends State<PatientForm> {
                     ),
                     Text('Enter image url'),
                     TextFormField(
+                      // enabled:false,
                       onSaved: (String value) {
                         print(" save image url");
                         print(value);
@@ -170,6 +174,12 @@ class _PatientFormState extends State<PatientForm> {
                         if (urlValidator(value) == null) {
                           BlocProvider.of<PatientsCubit>(context)
                               .saveUrlImage(value, copy.id);
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                          content: Text('URL updated in state ${value}'),
+                          duration: Duration(milliseconds: 2000),
+                        ),
+                              );
                         }
 
                         print(value);
@@ -178,12 +188,12 @@ class _PatientFormState extends State<PatientForm> {
                       textInputAction: TextInputAction.done,
                     ),
                     if (!_imageUrlController.text.isEmpty &&
-                        (_imageUrlController.text.startsWith('http')  
-                           ))
+                        (_imageUrlController.text.startsWith('http')))
                       BlocBuilder<InternetCubit, InternetState>(
                         builder: (context, state) {
-                          if(state is InternetDisconnected){
-                            return Text("Can't present url image without connection");
+                          if (state is InternetDisconnected) {
+                            return Text(
+                                "Can't present url image without connection");
                           }
                           return FittedBox(
                               child: Image.network(
@@ -204,40 +214,41 @@ class _PatientFormState extends State<PatientForm> {
                             // copy.id,
                           );
                         }),
-                    BlocListener<PatientsCubit, PatientsState>(
-                      listener: (context, state) {
-                        // final internetState =  context.watch<InternetCubit>().state;
-                        final internetState =
-                            BlocProvider.of<InternetCubit>(context).state;
-                        print('BlocListener<PatientsCubit332');
+//                     BlocListener<PatientsCubit, PatientsState>(
+//                       listener: (context, state) {
+//                         // final internetState =  context.watch<InternetCubit>().state;
+//                         final internetState =
+//                             BlocProvider.of<InternetCubit>(context).state;
+//                         print('BlocListener<PatientsCubit332');
 
-//  final heartbeatState =  context.select<PatientsCubit>().state.patients[index].hertBeat;
-// String result = "dsd";
-                        print('internetState');
-                        print(internetState);
+// //  final heartbeatState =  context.select<PatientsCubit>().state.patients[index].hertBeat;
+// // String result = "dsd";
+//                         print('internetState');
+//                         print(internetState);
 
-// if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Wifi){
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Wifi!'),
-                            duration: Duration(milliseconds: 2000),
-                          ),
-                        );
+// // if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Wifi){
+//                         ScaffoldMessenger.of(context).showSnackBar(
+//                           SnackBar(
+//                             content: Text('Wifi!'),
+//                             duration: Duration(milliseconds: 2000),
+//                           ),
+//                         );
 
-// }
-// if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Mobile){
-// // return  Text("mobile");
-// }
-// if(internetState is InternetDisconnected  ){
-// // return  Text("no internt");
-// }
-// if(internetState is InternetLoading  ){
-// // return  CircularProgressIndicator();
-// }
-                        // return  Text("default");
-                      },
-                      child: Container(),
-                    )
+// // }
+// // if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Mobile){
+// // // return  Text("mobile");
+// // }
+// // if(internetState is InternetDisconnected  ){
+// // // return  Text("no internt");
+// // }
+// // if(internetState is InternetLoading  ){
+// // // return  CircularProgressIndicator();
+// // }
+//                         // return  Text("default");
+//                       },
+//                       child: Container(),
+//                     )
+                 
                   ],
                 ),
               ),

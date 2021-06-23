@@ -36,8 +36,6 @@ class PatientDetails extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(10.0),
             child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-
               children: [
                 if (copy.imageUrl != null && copy.imageUrl.isNotEmpty)
                   BlocBuilder<InternetCubit, InternetState>(
