@@ -89,7 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   'count is :' + state.counterValue.toString(),
                   style: Theme.of(context).textTheme.bodyText1,
                 );
-              }, listener: (context, state) {
+              }, 
+              listener: (context, state) {
                 ScaffoldMessengerState scaf = ScaffoldMessenger.of(context);
 
                 if (state.wasIncremented == true) {

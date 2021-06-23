@@ -16,6 +16,7 @@ import '../dummy_data.dart';
   void saveHeartBeat (String value, String id){
 List<Patient> newList= state.patients;
 Patient result =newList.firstWhere((element) => element.id==id);
+
  result.hertBeat=int.parse(value);
  emit (PatientsState(newList));
 }

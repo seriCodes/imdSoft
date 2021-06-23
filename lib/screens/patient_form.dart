@@ -182,31 +182,41 @@ class _PatientFormState extends State<PatientForm> {
                             // copy.id,
                           );
                         }),
-                        Builder(builder: (context){
-                         final internetState =  context.watch<InternetCubit>().state;
- int index=BlocProvider.of<PatientsCubit>(context).getItemIndex( copy.id);
-                        print("index getItemIndex");
-          print(index);
+BlocListener<PatientsCubit, PatientsState>(
+  listener: (context, state) { 
+        // final internetState =  context.watch<InternetCubit>().state;
+print('BlocListener<PatientsCubit222');
 
 //  final heartbeatState =  context.select<PatientsCubit>().state.patients[index].hertBeat;
-
+// String result = "dsd";
 print('internetState');
-print(internetState);
+// print(internetState);
 
-if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Wifi){
-return  Text("Wifi");
-}
-if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Mobile){
-return  Text("mobile");
-}
-if(internetState is InternetDisconnected  ){
-return  Text("no internt");
-}
-if(internetState is InternetLoading  ){
-return  CircularProgressIndicator();
-}
-                        return  null;
-                        })
+// if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Wifi){
+  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Wifi!'),
+                      duration: Duration(milliseconds: 2000),
+                    ),
+                  );
+
+// }
+// if(internetState is InternetConnected && internetState.connectionType== ConnectionType.Mobile){
+// // return  Text("mobile");
+// }
+// if(internetState is InternetDisconnected  ){
+// // return  Text("no internt");
+// }
+// if(internetState is InternetLoading  ){
+// // return  CircularProgressIndicator();
+// }
+                        // return  Text("default");
+                        
+                        },
+ child:Container(),
+
+                   
+                      )
                   ],
                 ),
               ),
