@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       ],      child: MaterialApp(
         title: 'Flutter imdsoft Task',
         theme: ThemeData(
-          primarySwatch: Colors.indigo,
+          // primarySwatch: Colors.indigo,
           // accentColor: Colors.blueAccent,
           // cardColor: Color(0xFFFFFFFF),
           textTheme: TextTheme(
