@@ -91,13 +91,13 @@ class _PatientFormState extends State<PatientForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit patient"),
-        actions: <Widget>[
-          IconButton(
-              onPressed: () {
-                _saveForm();
-              },
-              icon: Icon(Icons.save)),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //       onPressed: () {
+        //         _saveForm();
+        //       },
+        //       icon: Icon(Icons.save)),
+        // ],
       ),
       body: BlocBuilder<PatientsCubit, PatientsState>(
         builder: (context, state) {
@@ -125,10 +125,7 @@ class _PatientFormState extends State<PatientForm> {
                         print(value);
                       },
                       onFieldSubmitted: (value) {
-                        print(value);
-                        print("onFieldSubmitted saveHeartBeat");
                         if (heartbeatValidation(value) == null) {
-                          print("onFieldSubmitted saveHeartBeat sucess");
                           BlocProvider.of<PatientsCubit>(context)
                               .saveHeartBeat(value, copy.id);
                         }
@@ -145,18 +142,28 @@ class _PatientFormState extends State<PatientForm> {
                       keyboardType: TextInputType.url,
                       controller: _imageUrlController,
                       focusNode: _imageUrlFocusNode,
-                      validator: formValidator,
-                      onFieldSubmitted: onUrlSubmited,
+                      validator:(v)=> urlValidator(v),
+                      onFieldSubmitted: (value) {
+                        print("value onUrlSubmited");
+                        if (urlValidator(value)==null){
+                        BlocProvider.of<PatientsCubit>(context)
+                              .saveUrlImage(value, copy.id);
+
+
+                        }
+
+                        print(value);
+                        _saveForm();
+                      },
                       textInputAction: TextInputAction.done,
                     ),
                     if (!_imageUrlController.text.isEmpty &&
-                        (_imageUrlController.text.startsWith('http')
+                        (_imageUrlController.text.startsWith('http') 
                         // || _imageUrlController.text.startsWith('https')
                         ))
                       FittedBox(
                           child: Image.network(
-                        //  "https://miro.medium.com/max/784/1*XWOy4cdViEBAPKqZi48ojQ.png",
-                        _imageUrlController.text,
+                         _imageUrlController.text,
                         fit: BoxFit.cover,
                       )),
                     TextButton.icon(
@@ -196,13 +203,13 @@ class _PatientFormState extends State<PatientForm> {
     }
   }
 
-  void onUrlSubmited(value) {
-    print("value onUrlSubmited");
-    print(value);
-    _saveForm();
-  }
+  // void onUrlSubmited(value) {
+  //   print("value onUrlSubmited");
+  //   print(value);
+  //   _saveForm();
+  // }
 
-  String formValidator(value) {
+  String urlValidator(value) {
     print('validator img');
     print(value);
     if (!value.isEmpty && !value.startsWith('http')

@@ -12,10 +12,7 @@ import '../dummy_data.dart';
 
   PatientsCubit() : super(PatientsState(DUMMY_PATIENTS));
 
-  void get printSome {
-    print("printSome PatientsCubit");
-  }
-
+ 
   void saveHeartBeat (String value, String id){
 List<Patient> newList= state.patients;
 Patient result =newList.firstWhere((element) => element.id==id);
@@ -23,6 +20,10 @@ Patient result =newList.firstWhere((element) => element.id==id);
  emit (PatientsState(newList));
 }
 
-// void decrement()=>emit(PatientsState(counterValue: state.counterValue-1, wasIncremented: false));
-
+   void saveUrlImage (String value, String id){
+List<Patient> newList= state.patients;
+Patient result =newList.firstWhere((element) => element.id==id);
+ result.imageUrl=value;
+ emit (PatientsState(newList));
+}
   }

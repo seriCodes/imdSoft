@@ -27,19 +27,22 @@ class PatientDetails extends StatelessWidget {
           //  print(id);
 
           Patient copy = state.patient(id);
-          print("copy ddfds");
-          print(copy);
+          print("copy url dtails");
+          print(copy.imageUrl);
 
           return Container(
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                Expanded(
+               if(copy.imageUrl!=null && copy.imageUrl.isNotEmpty) Expanded(
                   flex: 1,
-                  child: Placeholder(
-                    fallbackWidth: 5,
-                    fallbackHeight: 10,
-                  ),
+                  child:FittedBox(
+                          child: Image.network(copy.imageUrl
+                      )),
+                  //  Placeholder(
+                  //   fallbackWidth: 5,
+                  //   fallbackHeight: 10,
+                  // ),
                 ),
                 Expanded(
                   flex: 1,
