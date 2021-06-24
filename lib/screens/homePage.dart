@@ -12,9 +12,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('My Patients'), actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.add)),
-        ]),
+        appBar: AppBar(title: Text('My Patients'), ),
         body: BlocBuilder<PatientsCubit, PatientsState>(
           builder: (context, state) {
             List<Patient> copy= state.patients ;

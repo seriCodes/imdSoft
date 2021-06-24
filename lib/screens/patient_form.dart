@@ -112,55 +112,59 @@ class _PatientFormState extends State<PatientForm> {
                     child: Column(
                       children: <Widget>[
                         Text('Enter Heart beat'),
-                        TextFormField(
-                          initialValue: copy.hertBeat == null
-                              ? ""
-                              : copy.hertBeat.toString(),
-                          decoration: InputDecoration(
-                              labelText: 'Enter heart beat between 0 to 200'),
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.number,
-                          // controller: _heartbeatController,
-                          validator: (String v) => heartbeatValidation(v),
-                          onSaved: (String value) {
-                            print(" save hb url");
-                            print(value);
-                          },
-                          onFieldSubmitted: (value) {
-                            // final a = BlocProvider.of<InternetCubit>(context).state;
-                            // print("watch<InternetCubit>().state is InternetDisconnected");
-                            // print(a);
-                            //         ScaffoldMessenger.of(context).showSnackBar(
-                            //         SnackBar(
-                            //   content: Text('some'),
-                            //   duration: Duration(milliseconds: 2000),
-                            // ),
-                            //       );
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width/7,
+                          child: TextFormField(
+                            
+                            initialValue: copy.hertBeat == null
+                                ? ""
+                                : copy.hertBeat.toString(),
+                            decoration: InputDecoration(
+                                labelText: 'Enter heart beat between 0 to 200'),
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.number,
+                            // controller: _heartbeatController,
+                            validator: (String v) => heartbeatValidation(v),
+                            onSaved: (String value) {
+                              print(" save hb url");
+                              print(value);
+                            },
+                            onFieldSubmitted: (value) {
+                              // final a = BlocProvider.of<InternetCubit>(context).state;
+                              // print("watch<InternetCubit>().state is InternetDisconnected");
+                              // print(a);
+                              //         ScaffoldMessenger.of(context).showSnackBar(
+                              //         SnackBar(
+                              //   content: Text('some'),
+                              //   duration: Duration(milliseconds: 2000),
+                              // ),
+                              //       );
 
-                            // if (context.watch<InternetCubit>().state
-                            //     is InternetDisconnected) {
-                            //   ScaffoldMessenger.of(context).showSnackBar(
-                            //     SnackBar(
-                            //       content: Text('No internet! No State update'),
-                            //       duration: Duration(milliseconds: 2000),
-                            //     ),
-                            //   );
-                            //   return;
-                            // }
+                              // if (context.watch<InternetCubit>().state
+                              //     is InternetDisconnected) {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     SnackBar(
+                              //       content: Text('No internet! No State update'),
+                              //       duration: Duration(milliseconds: 2000),
+                              //     ),
+                              //   );
+                              //   return;
+                              // }
 
-                            if (heartbeatValidation(value) == null) {
-                              BlocProvider.of<PatientsCubit>(context)
-                                  .saveHeartBeat(value, copy.id);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('heartbeat updated in state '),
-                                  duration: Duration(milliseconds: 2000),
-                                ),
-                              );
-                            }
+                              if (heartbeatValidation(value) == null) {
+                                BlocProvider.of<PatientsCubit>(context)
+                                    .saveHeartBeat(value, copy.id);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('heartbeat updated in state '),
+                                    duration: Duration(milliseconds: 2000),
+                                  ),
+                                );
+                              }
 
-                            // context.read<PatientsCubit>().
-                          },
+                              // context.read<PatientsCubit>().
+                            },
+                          ),
                         ),
                         Text('Enter image url'),
                         TextFormField(

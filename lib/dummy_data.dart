@@ -8,7 +8,7 @@ final DUMMY_PATIENTS = [
     firstName: 'Rotem',
     lastName: "Reich",
     hertBeat:77,
-    imageUrl:"https://msapps.mobi/wp-content/uploads/2019/07/flutter_banner.jpg",
+    imageUrl:"https://content.fortune.com/wp-content/uploads/2018/07/gettyimages-961697338.jpg",
    storedImage:'/data/user/0/com.example.first_app/app_flutter/scaled_d829d3f6-54cd-43af-93fd-26c154932c771378523390.jpg',
   ),
   Patient(
