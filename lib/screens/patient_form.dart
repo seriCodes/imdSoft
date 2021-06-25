@@ -158,9 +158,7 @@ class _PatientFormState extends State<PatientForm> {
                                     duration: Duration(milliseconds: 2000),
                                   ),
                                 );
-                              }
-
-                              // context.read<PatientsCubit>().
+                              } 
                             },
                           ),
                         ),

@@ -5,6 +5,8 @@
 
 import '../models/patient.dart';
 import '../dummy_data.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
  part 'patients_state.dart';
 
@@ -40,4 +42,40 @@ int getItemIndex(String id){
 return result ;
 
 }
+ 
+//  static  Future<String>  saveNewPatientToDatabase({String heartBeat}) async{
+   Future<String>  saveNewPatientToDatabase({String heartBeat,String firstName,String lastName }) async{
+   final url = Uri.parse(
+                    "https://flutter-study-ceef3-default-rtdb.europe-west1.firebasedatabase.app/patients.json");
+                final result = await http.post(url, body: json.encode(
+                  {
+                       "firstName":firstName,
+                      "lastName":lastName,
+                      "hertBeat":heartBeat.toString(),
+                      // storedImage
+                    }
+                ));
+                print("result12345");
+                    final patient= new Patient(
+                      id:result.body,
+                      firstName: firstName,
+                      lastName:lastName,
+                      hertBeat:int.parse(heartBeat),
+                      // storedImage
+                      imageUrl:"",
+                      storedImage:"",
+                    );
+                print(result.body);
+                // return  http.post(url, body: json.encode(heartBeat));
+                print("result12345");
+                // return result;
+                List<Patient> newList= state.patients;
+newList.add(patient);
+ emit (PatientsState(newList));
+
+                return Future((){return "result.body";});
+   }
+
+ 
   }
+

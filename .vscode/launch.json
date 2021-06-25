@@ -7,13 +7,18 @@
         {
             "name": "imdSoft",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            
         },
         {
             "name": "imdSoft (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
-        }
+            "flutterMode": "profile",
+            
+
+            
+        },
+    
     ]
 }

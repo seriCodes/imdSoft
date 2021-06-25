@@ -31,5 +31,21 @@ static  String urlValidator(value) {
     print("before url null");
     return null;
   }
+static  String nameValidator(value) {
+    // print('validator img');
+    // print(value);
+     final validCharacters = RegExp(r'^[a-zA-Z]+$');
+     value = value.trim();
+    // print("validCharacters.hasMatch(value");
+    // print(validCharacters.hasMatch(value));
+
+    if (value.isEmpty || !validCharacters.hasMatch(value) 
+        // && !value.startsWith('https')
+        ) {
+      return "Enter a valid name";
+    }
+   
+     return null;
+  }
 
 }
