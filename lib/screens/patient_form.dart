@@ -1,11 +1,9 @@
-import 'package:first_app/constants/connections.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import '../models/patient.dart';
-import '../dummy_data.dart';
-import './image_input.dart';
-import '../constants/routes.dart';
+ import '../constants/routes.dart';
 import '../blocs/patients_cubit.dart';
 import '../blocs/internt_cubit.dart';
+import '../utilities/utilitiesExports.dart' as utilities;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -111,20 +109,20 @@ class _PatientFormState extends State<PatientForm> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
-                        Text('Enter Heart beat'),
+                        Text('Enter Heart beat between 0 to 200'),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width/7,
+                          width: MediaQuery.of(context).size.width/3,
                           child: TextFormField(
                             
                             initialValue: copy.hertBeat == null
                                 ? ""
                                 : copy.hertBeat.toString(),
                             decoration: InputDecoration(
-                                labelText: 'Enter heart beat between 0 to 200'),
+                                labelText: 'Heart beat'),
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.number,
                             // controller: _heartbeatController,
-                            validator: (String v) => heartbeatValidation(v),
+                            validator: (String v) => utilities.FormValidators.heartbeatValidation(v),
                             onSaved: (String value) {
                               print(" save hb url");
                               print(value);
@@ -151,7 +149,7 @@ class _PatientFormState extends State<PatientForm> {
                               //   return;
                               // }
 
-                              if (heartbeatValidation(value) == null) {
+                              if (utilities.FormValidators.heartbeatValidation(value) == null) {
                                 BlocProvider.of<PatientsCubit>(context)
                                     .saveHeartBeat(value, copy.id);
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -176,10 +174,10 @@ class _PatientFormState extends State<PatientForm> {
                           keyboardType: TextInputType.url,
                           controller: _imageUrlController,
                           focusNode: _imageUrlFocusNode,
-                          validator: (v) => urlValidator(v),
+                          validator: (v) =>utilities.FormValidators.urlValidator(v),
                           onFieldSubmitted: (value) {
                             print("value onUrlSubmited");
-                            if (urlValidator(value) == null) {
+                            if (utilities.FormValidators.urlValidator(value) == null) {
                               BlocProvider.of<PatientsCubit>(context)
                                   .saveUrlImage(value, copy.id);
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -261,50 +259,14 @@ class _PatientFormState extends State<PatientForm> {
                   ),
                 ),
               );
+       
             },
           );
         },
       ),
     );
   }
+ 
 
-  String heartbeatValidation(value) {
-    print('validator hb');
-    int hb;
-    try {
-      hb = int.parse(value);
-    } catch (e) {
-      print(e);
-      return "Please enter a number";
-    }
-    if (hb < 200 && hb > -1) {
-      return null;
-    } else {
-      return "Please enter VALID a number";
-    }
-  }
-
-  // void onUrlSubmited(value) {
-  //   print("value onUrlSubmited");
-  //   print(value);
-  //   _saveForm();
-  // }
-
-  String urlValidator(value) {
-    print('validator img');
-    print(value);
-    if (!value.isEmpty && !value.startsWith('http')
-        // && !value.startsWith('https')
-        ) {
-      return "please enter valid url";
-    }
-    if (!value.endsWith(".png") &&
-        !value.endsWith(".jpg") &&
-        !value.endsWith(".jpeg")) {
-      print('jpg');
-      return "please enter png, jpg or jpeg url";
-    }
-    print("before url null");
-    return null;
-  }
+ 
 }

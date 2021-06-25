@@ -19,14 +19,7 @@ class PatientItem extends StatelessWidget {
       onTap: (){
                return Navigator.of(context).pushNamed( 
                Routes.patientDetails,
-       arguments: id
-    //     <String, Object>{
-    //  "firstName":firstName,
-    // "lastName": lastName,
-    // "hertBeat":hertBeat,
-    // "id":id
-    // },
-
+       arguments: id 
                );
  
 
