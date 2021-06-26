@@ -18,6 +18,7 @@ class _AddPatientState extends State<AddPatient> {
   TextEditingController _heartbeatController = TextEditingController();
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
+  bool _isLoading = false;
 
   final _imageUrlFocusNode = FocusNode();
 
@@ -51,12 +52,40 @@ class _AddPatientState extends State<AddPatient> {
     super.dispose();
   }
 
-  void _saveForm(Function saver, String hb, String firstName, String lastName ) {
+  void _saveForm(Function saver, String hb, String firstName, String lastName,
+      BuildContext context) async {
     if (_form_key.currentState.validate()) {
       print('_saveForm');
       _form_key.currentState.save();
       print(_form_key.currentState);
-saver(heartBeat: hb,firstName:firstName,lastName:lastName );
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        await saver(heartBeat: hb, firstName: firstName, lastName: lastName);
+      } catch (error) {
+        print("inside Error");
+        await showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('An error occurred!'),
+            content: Text('Something went wrong.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              )
+            ],
+          ),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.of(context).pop();
+      }
     }
   }
 
@@ -69,9 +98,15 @@ saver(heartBeat: hb,firstName:firstName,lastName:lastName );
           IconButton(
               onPressed: () async {
                 String hb = _heartbeatController.text;
-      String firstName = _firstNameController.text;
-        String lastName = _lastNameController.text;
-              await  _saveForm(BlocProvider.of<PatientsCubit>(context).saveNewPatientToDatabase,hb,firstName,lastName );
+                String firstName = _firstNameController.text;
+                String lastName = _lastNameController.text;
+                await _saveForm(
+                    BlocProvider.of<PatientsCubit>(context)
+                        .saveNewPatientToDatabase,
+                    hb,
+                    firstName,
+                    lastName,
+                    context);
 
                 // await BlocProvider.of<PatientsCubit>(context).saveNewPatientToDatabase(heartBeat: hb);
               },
@@ -82,148 +117,161 @@ saver(heartBeat: hb,firstName:firstName,lastName:lastName );
         builder: (context, state) {
           return state is InternetDisconnected
               ? Center(child: Text("No Connection"))
-              : Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Form(
-                    key: _form_key,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          Text('Enter first name'),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 3,
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'name'),
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.name,
-                              validator: (String v) =>
-                                  utilities.FormValidators.nameValidator(v),
-                              onSaved: (String value) {
-                                print(" save first name url");
-                                print(value);
-                              },
-                              controller: _firstNameController,
-                              onFieldSubmitted: (value) {
-                                if (utilities.FormValidators.nameValidator(
-                                        value) ==
-                                    null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('name is valid'),
-                                      duration: Duration(milliseconds: 2000),
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                                                    Text('Enter Last name'),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 3,
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Last name'),
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.name,
-                              validator: (String v) =>
-                                  utilities.FormValidators.nameValidator(v),
-                              onSaved: (String value) {
-                                print(" save Last name url");
-                                print(value);
-                              },
-                              controller: _lastNameController,
-                              onFieldSubmitted: (value) {
-                                if (utilities.FormValidators.nameValidator(
-                                        value) ==
-                                    null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Last name is valid'),
-                                      duration: Duration(milliseconds: 2000),
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-
-                          Text('Enter Heart beat'),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 3,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  labelText: 'Number between 0 to 200'),
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.number,
-                              validator: (String v) =>
-                                  utilities.FormValidators.heartbeatValidation(
-                                      v),
-                              onSaved: (String value) {
-                                print(" save hb url");
-                                print(value);
-                              },
-                              controller: _heartbeatController,
-                              onFieldSubmitted: (value) {
-                                if (utilities.FormValidators
-                                        .heartbeatValidation(value) ==
-                                    null) {
-                                  // BlocProvider.of<PatientsCubit>(context).saveHeartBeat(value, copy.id);
+              : _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Form(
+                        key: _form_key,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              Text('Enter first name'),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 3,
+                                child: TextFormField(
+                                  decoration:
+                                      InputDecoration(labelText: 'name'),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.name,
+                                  validator: (String v) =>
+                                      utilities.FormValidators.nameValidator(v),
+                                  onSaved: (String value) {
+                                    print(" save first name url");
+                                    print(value);
+                                  },
+                                  controller: _firstNameController,
+                                  onFieldSubmitted: (value) {
+                                    if (utilities.FormValidators.nameValidator(
+                                            value) ==
+                                        null) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text('name is valid'),
+                                          duration:
+                                              Duration(milliseconds: 2000),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                              Text('Enter Last name'),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 3,
+                                child: TextFormField(
+                                  decoration:
+                                      InputDecoration(labelText: 'Last name'),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.name,
+                                  validator: (String v) =>
+                                      utilities.FormValidators.nameValidator(v),
+                                  onSaved: (String value) {
+                                    print(" save Last name url");
+                                    print(value);
+                                  },
+                                  controller: _lastNameController,
+                                  onFieldSubmitted: (value) {
+                                    if (utilities.FormValidators.nameValidator(
+                                            value) ==
+                                        null) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text('Last name is valid'),
+                                          duration:
+                                              Duration(milliseconds: 2000),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                              Text('Enter Heart beat'),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 3,
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                      labelText: 'Number between 0 to 200'),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
+                                  validator: (String v) => utilities
+                                      .FormValidators.heartbeatValidation(v),
+                                  onSaved: (String value) {
+                                    print(" save hb url");
+                                    print(value);
+                                  },
+                                  controller: _heartbeatController,
+                                  onFieldSubmitted: (value) {
+                                    if (utilities.FormValidators
+                                            .heartbeatValidation(value) ==
+                                        null) {
+                                      // BlocProvider.of<PatientsCubit>(context).saveHeartBeat(value, copy.id);
 // setState
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('heartbeat is valid'),
-                                      duration: Duration(milliseconds: 2000),
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                          Text('Enter image url'),
-                          TextFormField(
-                            onSaved: (String value) {},
-                            keyboardType: TextInputType.url,
-                            controller: _imageUrlController,
-                            focusNode: _imageUrlFocusNode,
-                            // validator: (v) => {return null},
-                            onFieldSubmitted: (value) async{
-                              print("value onUrlSubmited");
-                              if (true) {}
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text('heartbeat is valid'),
+                                          duration:
+                                              Duration(milliseconds: 2000),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                              Text('Enter image url'),
+                              TextFormField(
+                                onSaved: (String value) {},
+                                keyboardType: TextInputType.url,
+                                controller: _imageUrlController,
+                                focusNode: _imageUrlFocusNode,
+                                // validator: (v) => {return null},
+                                onFieldSubmitted: (value) async {
+                                  print("value onUrlSubmited");
+                                  if (true) {}
 
-                              print(value);
-                                              String hb = _heartbeatController.text;
-      String firstName = _firstNameController.text;
-        String lastName = _lastNameController.text;
+                                  print(value);
+                                  String hb = _heartbeatController.text;
+                                  String firstName = _firstNameController.text;
+                                  String lastName = _lastNameController.text;
 
- await  _saveForm(BlocProvider.of<PatientsCubit>(context).saveNewPatientToDatabase,hb,firstName,lastName );
-
-                            },
-                            textInputAction: TextInputAction.done,
+                                  await _saveForm(
+                                      BlocProvider.of<PatientsCubit>(context)
+                                          .saveNewPatientToDatabase,
+                                      hb,
+                                      firstName,
+                                      lastName,
+                                      context);
+                                },
+                                textInputAction: TextInputAction.done,
+                              ),
+                              if (!_imageUrlController.text.isEmpty &&
+                                  (_imageUrlController.text.startsWith('http')))
+                                BlocBuilder<InternetCubit, InternetState>(
+                                  builder: (context, state) {
+                                    if (state is InternetDisconnected) {
+                                      return Text(
+                                          "Can't present url image without connection");
+                                    }
+                                    return FittedBox(
+                                        child: Image.network(
+                                      _imageUrlController.text,
+                                      fit: BoxFit.cover,
+                                    ));
+                                  },
+                                ),
+                              TextButton.icon(
+                                label: Text("Take a picture page"),
+                                icon: const Icon(Icons.camera_front),
+                                onPressed: () {},
+                              ),
+                            ],
                           ),
-                          if (!_imageUrlController.text.isEmpty &&
-                              (_imageUrlController.text.startsWith('http')))
-                            BlocBuilder<InternetCubit, InternetState>(
-                              builder: (context, state) {
-                                if (state is InternetDisconnected) {
-                                  return Text(
-                                      "Can't present url image without connection");
-                                }
-                                return FittedBox(
-                                    child: Image.network(
-                                  _imageUrlController.text,
-                                  fit: BoxFit.cover,
-                                ));
-                              },
-                            ),
-                          TextButton.icon(
-                            label: Text("Take a picture page"),
-                            icon: const Icon(Icons.camera_front),
-                            onPressed: () {},
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                );
+                    );
         },
       ),
     );
