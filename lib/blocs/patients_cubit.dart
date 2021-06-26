@@ -14,7 +14,7 @@ class PatientsCubit extends Cubit<PatientsState> {
   // PatientsCubit() : super(PatientsState(DUMMY_PATIENTS));
   PatientsCubit() : super( PatientsState( [new Patient(firstName: "",lastName: "",id: "")]));
 
-  void fetchDataFromDataBase() async {
+  Future<void> fetchDataFromDataBase() async {
  
      final url = Uri.parse(Routes.dataBase + Routes.collections["patients"]);
     final result = await http.get(url);
@@ -30,7 +30,7 @@ class PatientsCubit extends Cubit<PatientsState> {
       ));
     }
     emit(PatientsState(newList));
-    // return newList;
+    return new Future((){});
   }
 
   void saveHeartBeat(String value, String id) {
