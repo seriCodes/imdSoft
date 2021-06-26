@@ -19,20 +19,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
+bool _isDataEmitted=false;
+// 
   bool _isInit=false;
   void initState() {
-BlocProvider.of<PatientsCubit>(context).fetchDataFromDataBase();
+
+// await BlocProvider.of<PatientsCubit>(context).fetchDataFromDataBase();
+    
     super.initState();
+  
   }
 
     @override
-void didChangeDependencies() {
+void didChangeDependencies() async{
   if(!_isInit){
-// BlocProvider.of<PatientsCubit>(context).fetchDataFromDataBase();
-
+    await BlocProvider.of<PatientsCubit>(context).fetchDataFromDataBase();
+      setState(() {
+      _isDataEmitted=true;
+        _isInit=true; 
+    }); 
   }
-  _isInit=true;
     super.didChangeDependencies();
   }
   @override
@@ -50,7 +56,7 @@ void didChangeDependencies() {
                 icon: Icon(Icons.add))
           ],
         ),
-        body: BlocBuilder<PatientsCubit, PatientsState>(
+        body:!_isDataEmitted ? Center(child: CircularProgressIndicator()):BlocBuilder<PatientsCubit, PatientsState>(
           builder: (context, state) {
             List<Patient> copy = state.patients;
             return ListView.builder(
