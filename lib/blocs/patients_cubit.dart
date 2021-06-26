@@ -11,7 +11,27 @@ import '../constants/routes.dart';
 part 'patients_state.dart';
 
 class PatientsCubit extends Cubit<PatientsState> {
-  PatientsCubit() : super(PatientsState(DUMMY_PATIENTS));
+  // PatientsCubit() : super(PatientsState(DUMMY_PATIENTS));
+  PatientsCubit() : super( PatientsState( [new Patient(firstName: "",lastName: "",id: "")]));
+
+  void fetchDataFromDataBase() async {
+ 
+     final url = Uri.parse(Routes.dataBase + Routes.collections["patients"]);
+    final result = await http.get(url);
+    Map<String, Object> raw = jsonDecode(result.body);
+    List<Patient> newList = [];
+    for (var k in raw.keys) {
+      dynamic pa = raw[k];
+      newList.add(new Patient(
+        id: k,
+        firstName: pa["firstName"],
+        lastName: pa["lastName"],
+        hertBeat: int.parse(pa["hertBeat"]),
+      ));
+    }
+    emit(PatientsState(newList));
+    // return newList;
+  }
 
   void saveHeartBeat(String value, String id) {
     List<Patient> newList = state.patients;
@@ -42,12 +62,11 @@ class PatientsCubit extends Cubit<PatientsState> {
     return result;
   }
 
-//  static  Future<String>  saveNewPatientToDatabase({String heartBeat}) async{
   Future<String> saveNewPatientToDatabase(
       {String heartBeat, String firstName, String lastName}) async {
     final url = Uri.parse(Routes.dataBase + Routes.collections["patients"]);
     try {
-      // final result<http.Response> = await http.post(url, body: json.encode(
+      //  http.Response  result = await http.post(url,
       final result = await http.post(url,
           body: json.encode({
             "firstName": firstName,
@@ -55,9 +74,9 @@ class PatientsCubit extends Cubit<PatientsState> {
             "hertBeat": heartBeat.toString(),
             // storedImage
           }));
-          if(result.statusCode!=200){
-            throw (result.body);
-          }
+      if (result.statusCode != 200) {
+        throw (result.body);
+      }
       final patient = new Patient(
         id: result.body,
         firstName: firstName,
@@ -71,7 +90,7 @@ class PatientsCubit extends Cubit<PatientsState> {
 
       newList.add(patient);
       emit(PatientsState(newList));
-     } catch (error) {
+    } catch (error) {
       print("error in cubit");
       throw (error);
     }

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:first_app/models/patient.dart';
 import 'package:flutter/material.dart';
 import '../blocs/patients_cubit.dart';
@@ -8,9 +10,31 @@ import '../widgets/patientItem.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage() : super();
 
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  bool _isInit=false;
+  void initState() {
+BlocProvider.of<PatientsCubit>(context).fetchDataFromDataBase();
+    super.initState();
+  }
+
+    @override
+void didChangeDependencies() {
+  if(!_isInit){
+// BlocProvider.of<PatientsCubit>(context).fetchDataFromDataBase();
+
+  }
+  _isInit=true;
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +53,6 @@ class HomePage extends StatelessWidget {
         body: BlocBuilder<PatientsCubit, PatientsState>(
           builder: (context, state) {
             List<Patient> copy = state.patients;
-            print("copy[2].id.toString()");
-            print(copy[2].id.toString());
             return ListView.builder(
                 padding: const EdgeInsets.all(8),
                 itemCount: state.patients.length,
