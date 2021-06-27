@@ -9,6 +9,7 @@ import '../constants/routes.dart';
 import '../widgets/patientItem.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:sliver_tools/sliver_tools.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage() : super();
@@ -63,37 +64,201 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, state) {
                   List<Patient> copy = state.patients;
                   return RefreshIndicator(
-                    onRefresh: () async{
-// showAboutDialog(context: context);
-                     await _onRefreshLoadData(context);
+                    onRefresh: () async {
+                      await _onRefreshLoadData(context);
                     },
-                    child: ListView.builder(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: state.patients.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(99),
-                            child: Container(
-                                padding: EdgeInsets.all(10),
-                                margin: EdgeInsets.all(8),
-                                height: 60,
-                                color: Colors.blue,
-                                child: PatientItem(
-                                  firstName: copy[index].firstName,
-                                  lastName: copy[index].lastName,
-                                  hertBeat: copy[index].hertBeat,
-                                  id: copy[index].id.toString(),
-                                  imageUrl: copy[index].imageUrl,
-                                )),
-                          );
-                        }),
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverPadding(
+                          padding: EdgeInsets.all(10),
+                          sliver: MultiSliver(
+                            pushPinnedChildren: true,
+                            children: [
+                              SliverStack(
+                                insetOnOverlap: true,
+                                children: [
+                                  SliverPositioned.fill(
+                                    top: 16,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(8),
+                                        boxShadow: const <BoxShadow>[
+                                          BoxShadow(
+                                            offset: Offset(0, 4),
+                                            blurRadius: 8,
+                                            color: Colors.black26,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  MultiSliver(
+                                    children: [
+                                      SliverPinnedHeader(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 12),
+                                          child: Container(
+                                            alignment: Alignment.topCenter,
+                                            margin:
+                                                const EdgeInsets.only(top: 16),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16, vertical: 12),
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: Colors.grey[300])),
+                                            ),
+                                            child: Text("My patients"),
+                                          ),
+                                        ),
+                                      ),
+                                      SliverClip(
+                                        child: MultiSliver(
+                                          children: [
+                                            SliverList(
+                                              // padding: const EdgeInsets.all(8),
+                                              delegate:
+                                                  SliverChildBuilderDelegate(
+                                                (context, index) => ClipRRect(
+                                                  key: UniqueKey(),
+                                                  borderRadius:
+                                                      BorderRadius.circular(99),
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    margin: EdgeInsets.all(8),
+                                                    height: 60,
+                                                    color: Colors.blue,
+                                                    child: PatientItem(
+                                                      firstName:
+                                                          copy[index].firstName,
+                                                      lastName:
+                                                          copy[index].lastName,
+                                                      hertBeat:
+                                                          copy[index].hertBeat,
+                                                      id: copy[index]
+                                                          .id
+                                                          .toString(),
+                                                      imageUrl:
+                                                          copy[index].imageUrl,
+                                                    ),
+                                                  ),
+                                                ),
+                                                childCount:
+                                                    state.patients.length,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SliverPadding(
+                          padding: EdgeInsets.all(10),
+                          sliver: MultiSliver(
+                            pushPinnedChildren: true,
+                            children: [
+                              SliverStack(
+                                insetOnOverlap: true,
+                                children: [
+                                  SliverPositioned.fill(
+                                    top: 16,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(8),
+                                        boxShadow: const <BoxShadow>[
+                                          BoxShadow(
+                                            offset: Offset(0, 4),
+                                            blurRadius: 8,
+                                            color: Colors.black26,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  MultiSliver(
+                                    children: [
+                                      SliverPinnedHeader(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 12),
+                                          child: Container(
+                                            alignment: Alignment.topCenter,
+                                            margin:
+                                                const EdgeInsets.only(top: 16),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16, vertical: 12),
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: Colors.grey[300])),
+                                            ),
+                                            child: Text("My patients"),
+                                          ),
+                                        ),
+                                      ),
+                                      SliverClip(
+                                        child: MultiSliver(
+                                          children: [
+                                            SliverList(
+                                              // padding: const EdgeInsets.all(8),
+                                              delegate:
+                                                  SliverChildBuilderDelegate(
+                                                (context, index) => ClipRRect(
+                                                  key: UniqueKey(),
+                                                  borderRadius:
+                                                      BorderRadius.circular(99),
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    margin: EdgeInsets.all(8),
+                                                    height: 60,
+                                                    color: Colors.blue,
+                                                    child: PatientItem(
+                                                      firstName:
+                                                          copy[index].firstName,
+                                                      lastName:
+                                                          copy[index].lastName,
+                                                      hertBeat:
+                                                          copy[index].hertBeat,
+                                                      id: copy[index]
+                                                          .id
+                                                          .toString(),
+                                                      imageUrl:
+                                                          copy[index].imageUrl,
+                                                    ),
+                                                  ),
+                                                ),
+                                                childCount:
+                                                    state.patients.length,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      
+                      ],
+                    ),
                   );
                 },
               ));
   }
 }
 
-Future<void> _onRefreshLoadData(context) async{
+Future<void> _onRefreshLoadData(context) async {
   await BlocProvider.of<PatientsCubit>(context, listen: false)
       .fetchDataFromDataBase();
 }
