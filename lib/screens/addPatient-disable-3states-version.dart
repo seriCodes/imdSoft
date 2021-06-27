@@ -1,4 +1,3 @@
-import 'package:first_app/screens/screensExports.dart';
 import 'package:flutter/material.dart';
 import '../blocs/patients_cubit.dart';
 import '../blocs/internt_cubit.dart';
@@ -8,8 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../utilities/utilitiesExports.dart' as utilities;
 
 class AddPatient extends StatefulWidget {
-  bool isSaveEnabled;
-  AddPatient({Key key, this.isSaveEnabled}) : super(key: key);
+// final String key;
   @override
   _AddPatientState createState() => _AddPatientState();
 }
@@ -21,7 +19,7 @@ class _AddPatientState extends State<AddPatient> {
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
   bool _isLoading = false;
-  bool _isFirstNameLegit = false;
+   bool _isFirstNameLegit = false;
   bool _isLastNameLegit = false;
   bool _isHeartbeatLegit = false;
 
@@ -32,17 +30,11 @@ class _AddPatientState extends State<AddPatient> {
     super.initState();
   }
 
+ 
+
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _heartbeatController.dispose(); 
     super.dispose();
-  }
-
-  void isAllValidatorsLegit() {
-    print(_isFirstNameLegit);
-    print("_isFirstNameLegit");
   }
 
   void _onLastNameChange(v) {
@@ -52,10 +44,11 @@ class _AddPatientState extends State<AddPatient> {
       setState(() {
         _isLastNameLegit = true;
       });
-    } else {
-      setState(() {
+    }else{
+            setState(() {
         _isLastNameLegit = false;
       });
+
     }
   }
 
@@ -66,13 +59,12 @@ class _AddPatientState extends State<AddPatient> {
       setState(() {
         _isFirstNameLegit = true;
       });
-    } else {
-      setState(() {
+    }else{
+            setState(() {
         _isFirstNameLegit = false;
       });
-    }
   }
-
+  }
   void _onHeartbeatNameChange(v) {
     print('_onHeartbeatNameChange4');
 
@@ -80,13 +72,12 @@ class _AddPatientState extends State<AddPatient> {
       setState(() {
         _isHeartbeatLegit = true;
       });
-    } else {
-      setState(() {
+    }else{
+            setState(() {
         _isHeartbeatLegit = false;
       });
-    }
   }
-
+  }
   void _saveForm(Function saver, String hb, String firstName, String lastName,
       BuildContext context) async {
     if (_form_key.currentState.validate()) {
@@ -133,22 +124,20 @@ class _AddPatientState extends State<AddPatient> {
           IconButton(
               onPressed: !_isFirstNameLegit
                   ? null
-                  : !_isLastNameLegit
-                      ? null
-                      : !_isHeartbeatLegit
-                          ? null
-                          : () async {
-                              String hb = _heartbeatController.text;
-                              String firstName = _firstNameController.text;
-                              String lastName = _lastNameController.text;
-                              await _saveForm(
-                                  BlocProvider.of<PatientsCubit>(context)
-                                      .saveNewPatientToDatabase,
-                                  hb,
-                                  firstName,
-                                  lastName,
-                                  context);
-                            },
+                  : !_isLastNameLegit? null: 
+                  !_isHeartbeatLegit? null:
+                  () async {
+                      String hb = _heartbeatController.text;
+                      String firstName = _firstNameController.text;
+                      String lastName = _lastNameController.text;
+                      await _saveForm(
+                          BlocProvider.of<PatientsCubit>(context)
+                              .saveNewPatientToDatabase,
+                          hb,
+                          firstName,
+                          lastName,
+                          context);
+                    },
               icon: Icon(Icons.save))
         ],
       ),

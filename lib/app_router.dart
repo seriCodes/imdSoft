@@ -3,6 +3,7 @@ import '../constants/routes.dart';
 import './screens/screensExports.dart' as pageWidgets;
 
 import './animations/bouncyScreenChange.dart';
+
 class AppRouter {
   Route onGenerateRoute(RouteSettings routeSettings) {
     print("routeSettings print");
@@ -15,18 +16,16 @@ class AppRouter {
         );
         break;
       case Routes.patientDetails:
-        return BouncyScreenChange(widget: pageWidgets.PatientDetails(),
-         routeSettings:routeSettings 
-        );
-        break;
-              case Routes.addPatient:
-              print('addPatient case');
         return BouncyScreenChange(
-          // widget: pageWidgets.HomePage(),
-        // widget: pageWidgets.AddPatient(),
-widget: pageWidgets.AddPatient(),
-         routeSettings:routeSettings 
-        );
+            widget: pageWidgets.PatientDetails(), routeSettings: routeSettings);
+        break;
+      case Routes.addPatient:
+        print('addPatient case');
+        return BouncyScreenChange(
+            // widget: pageWidgets.HomePage(),
+            // widget: pageWidgets.AddPatient(),
+            widget: pageWidgets.AddPatient(isSaveEnabled: false),
+            routeSettings: routeSettings);
         break;
 
       case Routes.patientForm:
