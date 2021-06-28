@@ -1,49 +1,85 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 
-import './playgroung/cubit/counter_cubit.dart';
-import './myHome.dart';
-import './playgroung/bloc/statelessScreenOne.dart';
+Future<Album> fetchAlbum(http.Client client) async {
+  final response =
+      await client.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-          
-        title: 'bloc demo',
-        theme: ThemeData(
-          primarySwatch: Colors.indigo,
-          // accentColor: Colors.blueAccent,
-          // cardColor: Color(0xFFFFFFFF),
-          textTheme: TextTheme(
-            bodyText1: TextStyle(
-              fontWeight: FontWeight.w600,
-               fontSize: 21.5,
-            ),
-            bodyText2: TextStyle(
-              color: Colors.indigo,
-              fontSize: 17.5,
-            ),
-          ),
-        ),
-        home: BlocProvider<CounterCubit>(
-          create: (context) => CounterCubit(),
-          child: CounterPage(),
-        ),
-        // initialRoute:'./',
-        // routes: {
-        //   './':(ctx) =>BlocProvider<CounterCubit>(
-        //   create: (context) => CounterCubit(),
-        //   child: MyHomePage(title: 'bloc Demo Home Page'),
-        // ),
-          // MyStaelessScreen.routeName: (ctx) => MyStaelessScreen(),
-        // },
-        );
-    //
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return Album.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
   }
 }
 
+class Album {
+  // final int userId;
+  // final int id;
+  final String title;
+
+  // Album({@required this.userId, @required this.id, @required this.title});
+Album({ @required this.title});
+  factory Album.fromJson(Map<String, dynamic> json) {
+    return Album(
+      // userId: json['userId'],
+      // id: json['id'],
+      title: json['title'],
+    );
+  }
+}
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatefulWidget {
+  MyApp({Key  key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+      Future<Album> futureAlbum;
+
+  @override
+  void initState() {
+    super.initState();
+    futureAlbum = fetchAlbum(http.Client());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Fetch Data Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Fetch Data Example'),
+        ),
+        body: Center(
+          child: FutureBuilder<Album>(
+            future: futureAlbum,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text(snapshot.data.title);
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+
+              // By default, show a loading spinner.
+              return CircularProgressIndicator();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}

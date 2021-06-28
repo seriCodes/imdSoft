@@ -15,7 +15,7 @@ void main() {
   print("test Widget2");
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-      print("testWidgets1");
+    print("testWidgets3");
 
     await tester.pumpWidget(MyApp());
 
@@ -29,6 +29,20 @@ void main() {
 
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
+    expect(find.text('1'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+
+    // Verify that our counter has incremented.
+    expect(find.text('1'), findsNothing);
+    expect(find.text('2'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.remove));
+    await tester.pump();
+
+    // Verify that our counter has incremented.
+    expect(find.text('2'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
 }
