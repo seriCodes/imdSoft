@@ -8,13 +8,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:imdsoft/main.dart';
-  print("test Widget1");
+// import 'package:imdsoft/main.dart';
+import '../lib/main.dart';
 
 void main() {
-  print("test Widget");
+  print("test Widget2");
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
+      print("testWidgets1");
+
     await tester.pumpWidget(MyApp());
 
     // Verify that our counter starts at 0.

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import './playgroung/cubit/counter_cubit.dart';
-import './playgroung/bloc/myHome.dart';
+import './myHome.dart';
 import './playgroung/bloc/statelessScreenOne.dart';
 
 void main() {
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         ),
         home: BlocProvider<CounterCubit>(
           create: (context) => CounterCubit(),
-          child: MyHomePage(title: 'bloc Demo Home Page'),
+          child: CounterPage(),
         ),
         // initialRoute:'./',
         // routes: {
