@@ -1,5 +1,4 @@
-import 'package:first_app/screens/patientdetails.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import '../constants/routes.dart';
 
 class PatientItem extends StatelessWidget {
