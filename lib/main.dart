@@ -1,9 +1,11 @@
  import 'package:flutter/material.dart';
 
 
- main(TodoList args) {
-   runApp(args())
- }
+//  main(TodoList args) {
+//    runApp(args())
+//  }
+ void main() => runApp(TodoList());
+
 class TodoList extends StatefulWidget {
   const TodoList({Key  key}) : super(key: key); 
   @override
@@ -55,5 +57,11 @@ class _TodoListState extends State<TodoList> {
         ),
       ),
     );
+  }
+  
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
   }
 }
